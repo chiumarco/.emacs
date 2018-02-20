@@ -134,7 +134,8 @@
 
 (use-package company
   :ensure t
-  :config (add-hook 'after-init-hook 'global-company-mode))
+  :config (add-hook 'after-init-hook 'global-company-mode)
+  )
 
 
 ;; (require 'whitespace)
@@ -147,7 +148,6 @@
 (global-set-key (kbd "M-/") 'windmove-down)
 (global-set-key (kbd "M-'") 'windmove-right)
 (global-set-key (kbd "M-;") 'windmove-left)
-
 (global-set-key (kbd "M-:") 'comment-line)
 
 ;; Show line-number in the mode line
