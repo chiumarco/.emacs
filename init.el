@@ -73,7 +73,7 @@
     ("ba7917b02812fee8da4827fdf7867d3f6f282694f679b5d73f9965f45590843a" default)))
  '(package-selected-packages
    (quote
-    (moe-theme company company-mode compnay-mode leuven-theme color-theme-sanityinc-tomorrow markdown-mode ibuffer-vc))))
+    (magit moe-theme company company-mode compnay-mode leuven-theme color-theme-sanityinc-tomorrow markdown-mode ibuffer-vc))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -84,6 +84,11 @@
 (require 'init-themes)
 (require 'init-ispell)
 (require 'init-Org)
+
+(use-package magit
+  :ensure t
+  )
+
 
 (use-package youdao-dictionary
   :ensure t

@@ -109,6 +109,7 @@
 ;; (global-set-key (kbd "C-=") 'increase-emacs-font-size)
 ;; (global-set-key (kbd "C--") 'decrease-emacs-font-size)
 
-
+;; fontify code in code blocks
+(setq org-src-fontify-natively t)
 
 (provide 'init-themes)
