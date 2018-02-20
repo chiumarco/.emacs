@@ -1,4 +1,3 @@
-
 ;; Warn when opening files bigger than 100MB
 (setq large-file-warning-threshold (* 100 1024 1024))
 
@@ -91,15 +90,6 @@
   :bind ("C-c d" . youdao-dictionary-search-at-point)
   :init (setq url-automatic-caching t))
 
-;; (use-package smex
-;;   :ensure t
-;;   :bind ("M-x" . smex)
-;;         ("M-X" . smex-major-mode-commands)
-;;         ("C-c C-c M-x" . execute-extended-command))
-
-;; (setq ido-enable-flex-matching t)
-;; (setq ido-everywhere t)
-;; (ido-mode 1)
 (use-package moe-theme
   :ensure t
   )
