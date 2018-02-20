@@ -1,0 +1,25 @@
+;;;; Emacs Bookmark Format Version 1 ;;;;
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("org-refile-last-stored"
+ (filename . "~/Dropbox/Emacs/Org/personal.org")
+ (front-context-string . "** TODO sleeping")
+ (rear-context-string . "e and eyebrowse\n")
+ (position . 2012))
+("org-capture-last-stored"
+ (filename . "c:/Users/Marco.Chiu/Dropbox/Emacs/Org/work.org")
+ (front-context-string . "** TODO Claim ST")
+ (rear-context-string . "2017-12-04 Mon>\n")
+ (position . 160))
+("Markdown"
+ (filename . "~/Documents/OneDrive/нд╪Ч/Markdown/")
+ (front-context-string . "Emacs\n  drwxr-xr")
+ (rear-context-string . "38 Sep 20 00:34 ")
+ (position . 453))
+("Downloads"
+ (filename . "~/Downloads/")
+ (front-context-string . "$RECYCLE.BIN\n  d")
+ (rear-context-string . "02 Sep 12 00:39 ")
+ (position . 201))
+)

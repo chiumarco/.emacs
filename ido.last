@@ -1,0 +1,34 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/Users/marco/" . ".emacs.d/")
+ ("/" . ".PKInstallSandboxManager-SystemSoftware/")
+ ("/Users/marco/.emacs.d/" . "lisp/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/Users/marco/.emacs.d/"
+ "/Users/marco/.emacs.d/lisp/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "init.el"
+ "init-Org.el"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/Users/marco/.emacs.d/" (22986 31923 0 0) "url/" "tramp" "smex-items" "packages/" "lisp/" "init.el~" "init.el" "ido.last" "games/" "elpa/" "bookmarks" "auto-save-list/" "abbrev_defs" ".org-id-locations" ".DS_Store" "../" "./")
+
+ ("/Users/marco/.emacs.d/lisp/" (22986 31144 0 0) "init-themes.el" "init-Org.el" "init-ispell.el" ".DS_Store" "../" "./")
+
+ ("/Users/" (22864 57727 0 0) "Shared/" "marco/" "Guest/" ".localized" "../" "./")
+
+ ("/Users/marco/" (22980 48982 0 0) "Public/" "Polyspace_Workspace/" "Pictures/" "Music/" "Movies/" "Library/" "Jts/" "Dropbox/" "Downloads/" "Documents/" "Desktop/" "Applications/" ".wget-hsts" ".viminfo" ".Trash/" ".subversion/" ".ssh/" ".saves/" ".oracle_jre_usage/" ".npm/" ".matplotlib/" ".local/" ".idlerc/" ".hwid" ".emacs.d/" ".electron/" ".DS_Store" ".dropbox/" ".config/" ".CFUserTextEncoding" ".bash_sessions/" ".bash_profile" ".bash_history" ".atom/" "../" "./")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t
