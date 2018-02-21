@@ -43,13 +43,13 @@
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
-;; (add-to-list 'load-path "~/.emacs.d/packages/vmd-mode")
+
+(add-to-list 'load-path (expand-file-name "packages/vmd-mode" user-emacs-directory))
 (when *is-a-mac*
-  (add-to-list 'load-path (expand-file-name "packages/vmd-mode" user-emacs-directory))
   (setenv "PATH" (concat "/usr/local/bin:/usr/bin:" (getenv "PATH")))
   (setq exec-path (append '("/usr/local/bin" "/usr/bin") exec-path))
-  (require 'vmd-mode)
   )
+(require 'vmd-mode)
 
 ;; ======================================================
 ;; Make window status undo-able
@@ -142,7 +142,7 @@
 (global-set-key (kbd "M-[") 'windmove-up)
 (global-set-key (kbd "M-/") 'windmove-down)
 (global-set-key (kbd "M-'") 'windmove-right)
-(global-set-key (kbd "M-;") 'windmove-left)
+;; (global-set-key (kbd "M-;") 'windmove-left)
 (global-set-key (kbd "M-:") 'comment-line)
 
 ;; Show line-number in the mode line
