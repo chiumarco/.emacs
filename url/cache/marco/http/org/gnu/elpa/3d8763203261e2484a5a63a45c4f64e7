@@ -1,10 +1,10 @@
 HTTP/1.1 200 OK
-Date: Tue, 20 Feb 2018 10:02:41 GMT
+Date: Sun, 25 Feb 2018 04:43:31 GMT
 Server: Apache/2.4.25 (Debian)
-Last-Modified: Mon, 19 Feb 2018 22:04:35 GMT
-ETag: "8d25-56597e12b1570"
+Last-Modified: Sat, 24 Feb 2018 22:05:41 GMT
+ETag: "8d23-565fc7a476135"
 Accept-Ranges: bytes
-Content-Length: 36133
+Content-Length: 36131
 Keep-Alive: timeout=5, max=100
 Connection: Keep-Alive
 
@@ -191,7 +191,7 @@ Connection: Keep-Alive
 		      ((:url . "https://github.com/cpitclaudel/compact-docstrings")
 		       (:keywords "convenience" "faces" "lisp" "maint" "c"))])
  (company .
-	  [(0 9 5)
+	  [(0 9 6)
 	   ((emacs
 	     (24 3)))
 	   "Modular text completion framework" tar
@@ -385,7 +385,7 @@ Connection: Keep-Alive
 	     ((:url . "http://elpa.gnu.org/packages/ediprolog.html")
 	      (:keywords "languages" "processes"))])
  (el-search .
-	    [(1 5 4)
+	    [(1 6)
 	     ((emacs
 	       (25))
 	      (stream
@@ -440,9 +440,9 @@ Connection: Keep-Alive
 	       ((:keywords "calendar")
 		(:url . "http://elpa.gnu.org/packages/excorporate.html"))])
  (exwm .
-       [(0 16)
+       [(0 17)
 	((xelb
-	  (0 12)))
+	  (0 13)))
 	"Emacs X Window Manager" tar
 	((:keywords "unix")
 	 (:url . "https://github.com/ch11ng/exwm"))])
@@ -1200,7 +1200,7 @@ Connection: Keep-Alive
 	 ((:url . "http://elpa.gnu.org/packages/xclip.html")
 	  (:keywords "convenience" "tools"))])
  (xelb .
-       [(0 12)
+       [(0 13)
 	((emacs
 	  (24 4))
 	 (cl-generic

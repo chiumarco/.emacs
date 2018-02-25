@@ -4,3 +4,5 @@
 # Emacs temporary files
 *~
 recentf
+.#*
+auto-save-list

@@ -34,12 +34,25 @@
 	(package-install 'use-package))
 
 (use-package try
-	:ensure t)
+  :ensure t)
 
 (use-package which-key
-	:ensure t 
-	:config
-	(which-key-mode))
+  :ensure t 
+  :config
+  (which-key-mode))
+
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
+
+
+(use-package pandoc-mode
+  :ensure t)
+
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
@@ -73,7 +86,7 @@
     ("ba7917b02812fee8da4827fdf7867d3f6f282694f679b5d73f9965f45590843a" default)))
  '(package-selected-packages
    (quote
-    (magit moe-theme company company-mode compnay-mode leuven-theme color-theme-sanityinc-tomorrow markdown-mode ibuffer-vc))))
+    (markdown-mode pandoc-mode magit moe-theme company company-mode compnay-mode leuven-theme color-theme-sanityinc-tomorrow ibuffer-vc))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
