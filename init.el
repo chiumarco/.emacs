@@ -79,7 +79,7 @@
 
 ;; (require 'init-themes)
 ;; (require 'init-ispell)
-(require 'init-Org)
+;; (require 'init-Org)
 
 
 
