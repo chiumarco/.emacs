@@ -1,0 +1,338 @@
+
+* Basic Interface Settings
+
+These are setting that do not depend on packages and are built-in enhancements to the UI.
+
+** Looks
+*** Remove lame startup screen
+We use an actual replacement for it, keep reading or head directly to =dashboard=.
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message nil)
+#+END_SRC
+
+*** Disable menus and scrollbars
+If you like using any of those, change =-1= to =1=.
+#+BEGIN_SRC emacs-lisp
+(tool-bar-mode -1)
+;;(menu-bar-mode 1)
+;;(scroll-bar-mode 1)
+#+END_SRC
+
+*** Disable bell
+#+BEGIN_SRC emacs-lisp
+(setq ring-bell-function 'ignore)
+#+END_SRC
+
+*** Set UTF-8 encoding
+#+BEGIN_SRC emacs-lisp 
+  (setq locale-coding-system 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
+#+END_SRC
+
+*** Highligh current line
+=hl-line= is awesome! It's not very awesome in the terminal version of emacs though, so we don't use that.
+#+BEGIN_SRC emacs-lisp
+(when window-system (global-hl-line-mode t))
+#+END_SRC
+
+*** Pretty symbols
+Changes =lambda= to an actual symbol and a few others as well, only in the GUI version though.
+#+BEGIN_SRC emacs-lisp
+;; (when window-system (global-prettify-symbols-mode t))
+#+END_SRC
+
+*** Front Size
+
+#+BEGIN_SRC emacs-lisp
+;; Set front size, the value is in 1/10pt, so 160=16pt
+(when *is-a-mac*
+  (set-face-attribute 'default nil :height 160))
+
+(when *is-a-win*
+  (set-face-attribute 'default nil :height 120)
+  (add-hook 'emacs-startup-hook 'toggle-frame-maximized)
+  )
+#+END_SRC
+
+** Functionality
+
+*** Disable backups and auto-saves
+I don't use either, you might want to turn those from =nil= to =t= if you do.
+#+BEGIN_SRC emacs-lisp
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+#+END_SRC
+
+*** Change yes-or-no questions into y-or-n questions
+#+BEGIN_SRC emacs-lisp
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+
+* Themes
+
+** Leuven
+Default theme.
+#+BEGIN_SRC emacs-lisp
+(load-theme 'leuven t)
+#+END_SRC
+
+** Function to toggle between light and dark
+
+#+BEGIN_SRC emacs-lisp
+;; Ensure that themes will be applied even if they have not been customized
+(defun reapply-themes ()
+  "Forcibly load the themes listed in `custom-enabled-themes'."
+  (dolist (theme custom-enabled-themes)
+    (unless (custom-theme-p theme)
+      (load-theme theme)))
+  (custom-set-variables `(custom-enabled-themes (quote ,custom-enabled-themes))))
+
+(add-hook 'after-init-hook 'reapply-themes)
+
+(defun light ()
+  "Activate a light color theme."
+  (interactive)
+  (load-theme 'leuven t)
+  (reapply-themes)
+  )
+
+(defun dark ()
+  "Activate a dark color theme."
+  (interactive)
+  (load-theme 'leuven-dark t)
+  (reapply-themes)
+  )
+#+END_SRC
+
+
+* Modeline
+** Spaceline
+Powerline theme from Spacemacs
+#+BEGIN_SRC emacs-lisp
+  (use-package spaceline
+    :ensure t
+    :config
+    (require 'spaceline-config)
+      (setq spaceline-buffer-encoding-abbrev-p nil)
+      (setq spaceline-line-column-p nil)
+      (setq spaceline-line-p nil)
+      (setq powerline-default-separator (quote arrow))
+      (spaceline-spacemacs-theme))
+#+END_SRC
+
+** Cursor position
+Show the current line and column for your cursor.
+#+BEGIN_SRC emacs-lisp
+  (line-number-mode 1)
+  (column-number-mode 1)
+#+END_SRC
+
+** Clock
+If you prefer the 12hr-format, change the variable to =nil= instead of =t=.
+
+*** Time format
+#+BEGIN_SRC emacs-lisp
+  (setq display-time-24hr-format t)
+  (setq display-time-format "%H:%M - %d %B %Y")
+#+END_SRC
+
+*** Enabling the mode
+This turns on the clock globally.
+#+BEGIN_SRC emacs-lisp
+  (display-time-mode 1)
+#+END_SRC
+
+** Diminishing modes
+The package =diminish= disables modes on the mode line but keeps
+them running, it just prevents them from showing up and taking up space.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package diminish
+    :ensure t
+    :init
+    (diminish 'which-key-mode)
+    (diminish 'linum-relative-mode))
+#+END_SRC
+
+
+* Projectile
+Projectile is an awesome project manager, mostly because it recognizes directories
+with a =.git= directory as projects and helps you manage them accordingly.
+
+** Enable projectile globally
+This makes sure that everything can be a project.
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :init
+      (projectile-mode 1))
+#+END_SRC
+
+
+* Dashboard
+This is your new startup screen, together with projectile it works in unison and
+provides you with a quick look into your latest projects and files.
+Change the welcome message to whatever string you want and
+change the numbers to suit your liking, I find 5 to be enough.
+
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package dashboard
+  ;;   :ensure t
+  ;;   :config
+  ;;     (dashboard-setup-startup-hook)
+  ;;     (setq dashboard-banner-logo-title "Welcome to Emacs!")
+  ;;     (setq dashboard-startup-banner 'official)
+  ;;     (setq dashboard-items '((recents  . 5)
+  ;;                             (projects . 5)
+  ;;                             (bookmark . 5)
+  ;;                             (agenda   . 5)))
+  ;;     (add-to-list 'dashboard-items '(agenda) t))
+#+END_SRC
+
+
+* File manager
+
+** treemacs
+
+#+BEGIN_SRC emacs-lisp
+  (use-package treemacs
+    :ensure t
+    :defer t
+    :config
+    (progn
+      (setq treemacs-follow-after-init t
+            treemacs-width 35
+            treemacs-indentation 2
+            treemacs-collapse-dirs (if (executable-find "python") 3 0)
+            treemacs-silent-refresh nil
+            treemacs-change-root-without-asking nil
+            treemacs-sorting 'alphabetic-desc
+            treemacs-show-hidden-files t
+            treemacs-never-persist nil
+            treemacs-is-never-other-window nil
+            treemacs-goto-tag-strategy 'refetch-index)
+
+      (treemacs-follow-mode t)
+      (treemacs-filewatch-mode t)
+      (pcase (cons (not (null (executable-find "git")))
+                   (not (null (executable-find "python3"))))
+        (`(t . t)
+         (treemacs-git-mode 'extended))
+        (`(t . _)
+         (treemacs-git-mode 'simple))))
+    :bind
+    (:map global-map
+          ([f8] . treemacs-toggle)))
+
+  (use-package treemacs-projectile
+    :defer t
+    :ensure t
+    :config
+        (setq treemacs-header-function #'treemacs-projectile-create-header)
+    :bind (:map global-map
+                ([f9] . treemacs-projectile)))
+#+END_SRC
+
+
+* Programming
+
+** Markdown
+
+#+BEGIN_SRC emacs-lisp
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
+#+END_SRC
+
+Use vmd to live time preview markdown file.
+Need install =Node.js= and =vmd=.
+#+BEGIN_SRC 
+npm install -g vmd
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path (expand-file-name "packages/vmd-mode" user-emacs-directory))
+  (when *is-a-mac*
+    (setenv "PATH" (concat "/usr/local/bin:/usr/bin:" (getenv "PATH")))
+    (setq exec-path (append '("/usr/local/bin" "/usr/bin") exec-path)))
+  (require 'vmd-mode)
+#+END_SRC
+
+
+** Matlab
+
+#+BEGIN_SRC emacs-lisp
+(use-package matlab-mode
+  :ensure t)
+#+END_SRC
+
+
+
+* Git integration
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :ensure t
+    :config
+    (setq magit-push-always-verify nil)
+    (setq git-commit-summary-max-length 50))
+#+END_SRC
+
+
+* Org
+
+** Common settings
+
+#+BEGIN_SRC emacs-lisp
+  ;(setq org-ellipsis " ")
+  (setq org-src-fontify-natively t)
+  (setq org-src-tab-acts-natively t)
+  (setq org-confirm-babel-evaluate nil)
+  (setq org-export-with-smart-quotes t)
+  (setq org-src-window-setup 'current-window)
+#+END_SRC
+
+
+* Useful tools
+
+** ispell
+#+BEGIN_SRC emacs-lisp
+(defun ispell-word-then-abbrev (p)
+  "Call `ispell-word'. Then create an abbrev for the correction made.
+With prefix P, create local abbrev. Otherwise it will be global."
+  (interactive "P")
+  (let ((before (downcase (or (thing-at-point 'word) "")))
+        after)
+    (call-interactively 'ispell-word)
+    (setq after (downcase (or (thing-at-point 'word) "")))
+    (unless (string= after before)
+      (define-abbrev
+        (if p local-abbrev-table global-abbrev-table) before after))
+      (message "\"%s\" now expands to \"%s\" %sally."
+               before after (if p "loc" "glob"))))
+
+(define-key ctl-x-map (kbd "C-i") 'ispell-word-then-abbrev)
+
+(setq save-abbrevs t)
+(setq-default abbrev-mode t)
+(setq ispell-program-name "aspell")
+#+END_SRC
+
+** Youdao Dictionary
+
+#+BEGIN_SRC emacs-lisp
+(use-package youdao-dictionary
+  :ensure t
+  :bind ("C-c d" . youdao-dictionary-search-at-point)
+  :init (setq url-automatic-caching t))
+#+END_SRC
+
+

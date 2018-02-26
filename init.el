@@ -5,17 +5,12 @@
 ;; each 100MB of allocated data (the default is on every 0.76MB)
 (setq gc-cons-threshold (* 100 1024 1024))
 
-;; only type 'y' or 'n' instead of 'yes' or 'no'
-(fset 'yes-or-no-p 'y-or-n-p)
-
 ;; User Info
 (setq user-full-name "Marco Chiu")
 (setq user-mail-address "chiumarco@gmail.com")
 
 (defconst *is-a-mac* (eq system-type 'darwin))
 (defconst *is-a-win* (eq system-type 'windows-nt))
-
-(tool-bar-mode -1)
 
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -33,6 +28,9 @@
 	(package-refresh-contents)
 	(package-install 'use-package))
 
+(org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))
+
+
 (use-package try
   :ensure t)
 
@@ -41,14 +39,6 @@
   :config
   (which-key-mode))
 
-(use-package markdown-mode
-  :ensure t
-  :commands (markdown-mode gfm-mode)
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "multimarkdown"))
-
 
 (use-package pandoc-mode
   :ensure t)
@@ -56,13 +46,6 @@
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
-
-(add-to-list 'load-path (expand-file-name "packages/vmd-mode" user-emacs-directory))
-(when *is-a-mac*
-  (setenv "PATH" (concat "/usr/local/bin:/usr/bin:" (getenv "PATH")))
-  (setq exec-path (append '("/usr/local/bin" "/usr/bin") exec-path))
-  )
-(require 'vmd-mode)
 
 ;; ======================================================
 ;; Make window status undo-able
@@ -86,7 +69,7 @@
     ("ba7917b02812fee8da4827fdf7867d3f6f282694f679b5d73f9965f45590843a" default)))
  '(package-selected-packages
    (quote
-    (markdown-mode pandoc-mode magit moe-theme company company-mode compnay-mode leuven-theme color-theme-sanityinc-tomorrow ibuffer-vc))))
+    (dashboard projectile spaceline markdown-mode pandoc-mode magit moe-theme company company-mode compnay-mode leuven-theme color-theme-sanityinc-tomorrow ibuffer-vc))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -94,23 +77,16 @@
  ;; If there is more than one, they won't work right.
  )
 
-(require 'init-themes)
-(require 'init-ispell)
+;; (require 'init-themes)
+;; (require 'init-ispell)
 (require 'init-Org)
 
-(use-package magit
-  :ensure t
-  )
 
 
-(use-package youdao-dictionary
-  :ensure t
-  :bind ("C-c d" . youdao-dictionary-search-at-point)
-  :init (setq url-automatic-caching t))
 
-(use-package moe-theme
-  :ensure t
-  )
+;; (use-package moe-theme
+;;   :ensure t
+;;   )
 
 
 (use-package counsel
@@ -158,26 +134,7 @@
 ;; (global-set-key (kbd "M-;") 'windmove-left)
 (global-set-key (kbd "M-:") 'comment-line)
 
-;; Show line-number in the mode line
-(line-number-mode 1)
-;; Show column-number in the mode line
-(column-number-mode t)
 ;; make cursor the width of the character it is under
 ;; i.e. full width of a TAB
 (setq x-stretch-cursor t)
-
-
-(setq
-   backup-by-copying t      ; don't clobber symlinks
-   backup-directory-alist
-    '(("." . "~/.saves"))    ; don't litter my fs tree
-   delete-old-versions t
-   kept-new-versions 6
-   kept-old-versions 2
-   version-control t)       ; use versioned backups
-
-;; (defun up-slightly () (interactive) (scroll-up 1))
-;; (defun down-slightly () (interactive) (scroll-down 1))
-;; (global-set-key [mouse-4] 'down-slightly)
-;; (global-set-key [mouse-5] 'up-slightly)
 
