@@ -1,4 +1,7 @@
 
+(defconst *is-a-mac* (eq system-type 'darwin))
+(defconst *is-a-win* (eq system-type 'windows-nt))
+
 (setq inhibit-startup-message nil)
 
 (tool-bar-mode -1)
@@ -26,10 +29,15 @@
   (add-hook 'emacs-startup-hook 'toggle-frame-maximized)
   )
 
+(setq x-stretch-cursor t)
+
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+(setq user-full-name "Marco Chiu")
+(setq user-mail-address "chiumarco@gmail.com")
 
 (load-theme 'leuven t)
 
@@ -135,6 +143,147 @@
   :bind (:map global-map
               ([f9] . treemacs-projectile)))
 
+(use-package ivy
+  :ensure t)
+
+(use-package counsel
+  :ensure t
+  )
+
+(use-package swiper
+  :ensure t
+  :config
+  (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (global-set-key "\C-s" 'swiper)
+    (global-set-key (kbd "C-c C-r") 'ivy-resume)
+    (global-set-key (kbd "<f6>") 'ivy-resume)
+    (global-set-key (kbd "M-x") 'counsel-M-x)
+    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+    (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+    (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+    (global-set-key (kbd "<f1> l") 'counsel-load-library)
+    (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+    (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+    (global-set-key (kbd "C-c g") 'counsel-git)
+    (global-set-key (kbd "C-c j") 'counsel-git-grep)
+    (global-set-key (kbd "C-c k") 'counsel-ag)
+    (global-set-key (kbd "C-x l") 'counsel-locate)
+    (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+    )
+
+(setq scroll-conservatively 100)
+
+(use-package which-key
+  :ensure t
+  :config
+    (which-key-mode))
+
+(require 'winner)
+(winner-mode 1)
+
+(defun split-and-follow-horizontally ()
+  (interactive)
+  (split-window-below)
+  (balance-windows)
+  (other-window 1))
+(global-set-key (kbd "C-x 2") 'split-and-follow-horizontally)
+
+(defun split-and-follow-vertically ()
+  (interactive)
+  (split-window-right)
+  (balance-windows)
+  (other-window 1))
+(global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
+
+(global-set-key (kbd "M-[") 'windmove-up)
+(global-set-key (kbd "M-/") 'windmove-down)
+(global-set-key (kbd "M-'") 'windmove-right)
+(global-set-key (kbd "M-;") 'windmove-left)
+(global-set-key (kbd "M-:") 'comment-line)
+
+(defun kill-current-buffer ()
+  "Kills the current buffer."
+  (interactive)
+  (kill-buffer (current-buffer)))
+(global-set-key (kbd "C-x k") 'kill-current-buffer)
+
+(setq kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
+
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
+(setq ibuffer-saved-filter-groups
+        '(("home"
+          ("emacs-config" (or (filename . ".emacs.d")
+                              (filename . "emacs-config")))
+           ("Org" (or (mode . org-mode)
+                      (filename . "OrgMode")))
+           ("code" (filename . "code"))
+           ("Web Dev" (or (mode . html-mode)
+                          (mode . css-mode)))
+           ("Subversion" (name . "\*svn"))
+           ("Magit" (name . "\*magit"))
+           ("ERC" (mode . erc-mode))
+           ("Help" (or (name . "\*Help\*")
+                       (name . "\*Apropos\*")
+                       (name . "\*info\*"))))))
+(add-hook 'ibuffer-mode-hook
+          '(lambda ()
+             (ibuffer-auto-mode 1)
+             (ibuffer-switch-to-saved-filter-groups "home")))
+(setq ibuffer-show-empty-filter-groups nil)
+
+;; (setq ibuffer-expert t)
+
+(defun close-all-buffers ()
+  "Kill all buffers without regard for their origin."
+  (interactive)
+  (mapc 'kill-buffer (buffer-list)))
+(global-set-key (kbd "C-M-s-k") 'close-all-buffers)
+
+(use-package beacon
+  :ensure t
+  :config
+    (beacon-mode 1))
+
+(use-package rainbow-delimiters
+  :ensure t
+  :init
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+(use-package ace-popup-menu
+  :ensure t
+  :init
+    (ace-popup-menu-mode 1))
+
+(use-package popup-kill-ring
+  :ensure t
+  :bind ("M-y" . popup-kill-ring))
+
+(use-package company
+  :ensure t
+  :config
+    (setq company-dabbrev-downcase 0)
+    (setq company-idle-delay 0)
+    (setq company-minimum-prefix-length 3)
+  :init
+    (add-hook 'after-init-hook 'global-company-mode))
+
+(with-eval-after-load 'company
+    (define-key company-active-map (kbd "M-n") nil)
+    (define-key company-active-map (kbd "M-p") nil)
+    (define-key company-active-map (kbd "C-n") #'company-select-next)
+    (define-key company-active-map (kbd "C-p") #'company-select-previous))
+
+(setq electric-pair-pairs '(
+                           (?\{ . ?\})
+                           (?\( . ?\))
+                           (?\[ . ?\])
+                           ))
+
+(electric-pair-mode t)
+
 (use-package markdown-mode
   :ensure t
   :commands (markdown-mode gfm-mode)
@@ -239,7 +388,7 @@
                              (path_work :maxlevel . 1)
                              (path_personal :maxlevel . 1)))
 
-(when *is-a-mac*
+(when *is-a-win*
   (defvar path_sha1sum (concat user-emacs-directory "packages/sha1sum.exe"))
   (setq org-mobile-checksum-binary path_sha1sum))
 
@@ -267,3 +416,9 @@ With prefix P, create local abbrev. Otherwise it will be global."
   :ensure t
   :bind ("C-c d" . youdao-dictionary-search-at-point)
   :init (setq url-automatic-caching t))
+
+(use-package try
+  :ensure t)
+
+(use-package pandoc-mode
+  :ensure t)

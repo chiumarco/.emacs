@@ -25,15 +25,8 @@
 (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))
 
 
-(use-package pandoc-mode
-  :ensure t)
 
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-
-
-(require 'ibuffer)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-(autoload 'ibuffer "ibuffer" "List buffers." t)
+;; (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 
 (custom-set-variables
@@ -54,9 +47,3 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-
-(use-package company
-  :ensure t
-  :config (add-hook 'after-init-hook 'global-company-mode)
-  )
