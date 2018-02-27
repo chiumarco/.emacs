@@ -211,33 +211,37 @@
 (require 'org-mobile)
 
 (when *is-a-mac*
-  (setq org-directory "~/Dropbox/Emacs/Org")
-  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg"))
+    (setq org-directory "~/Dropbox/Emacs/Org")
+    (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg"))
 
-(when *is-a-win*
-  (setq org-directory "C:/Users/Marco.Chiu/Dropbox/Emacs/Org")
-  (setq org-mobile-directory "C:/Users/Marco.Chiu/Dropbox/Apps/MobileOrg"))
+  (when *is-a-win*
+    (setq org-directory "C:/Users/Marco.Chiu/Dropbox/Emacs/Org")
+    (setq org-mobile-directory "C:/Users/Marco.Chiu/Dropbox/Apps/MobileOrg"))
 
-(defvar path_inbox (concat org-directory "/inbox.org"))
-(defvar path_home (concat org-directory "/home.org"))
-(defvar path_work (concat org-directory "/work.org"))
-(defvar path_personal (concat org-directory "/personal.org"))
+  (defvar path_inbox (concat org-directory "/inbox.org"))
+  (defvar path_home (concat org-directory "/home.org"))
+  (defvar path_work (concat org-directory "/work.org"))
+  (defvar path_personal (concat org-directory "/personal.org"))
 
-(setq org-default-notes-file path_inbox)
-(setq org-mobile-inbox-for-pull path_inbox)
-(setq org-mobile-files (list path_home path_work path_personal))
-(setq org-agenda-files (list path_home path_work path_personal))
+  (setq org-default-notes-file path_inbox)
+  (setq org-mobile-inbox-for-pull path_inbox)
+  (setq org-mobile-files (list path_home path_work path_personal))
+  (setq org-agenda-files (list path_home path_work path_personal))
 
-(setq org-capture-templates
-      '(("t" "Todo-Personal" entry (file+headline path_personal "Personal Tasks:") "* TODO %?\n")
-        ("h" "Todo-Home" entry (file+headline path_home "Home Tasks:") "* TODO %?\n")
-        ("w" "Todo-Work" entry (file+headline path_work "Work Tasks:") "* TODO %?\n")
-        ("j" "Todo" entry (file+headline path_inbox "Tasks" ) "* TODO %?\n")
-        ))
+  (setq org-capture-templates
+        '(("t" "Todo-Personal" entry (file+headline path_personal "Personal Tasks:") "* TODO %?\n")
+          ("h" "Todo-Home" entry (file+headline path_home "Home Tasks:") "* TODO %?\n")
+          ("w" "Todo-Work" entry (file+headline path_work "Work Tasks:") "* TODO %?\n")
+          ("j" "Todo" entry (file+headline path_inbox "Tasks" ) "* TODO %?\n")
+          ))
 
-(setq org-refile-targets '((path_home :maxlevel . 1)
-                           (path_work :maxlevel . 1)
-                           (path_personal :maxlevel . 1)))
+  (setq org-refile-targets '((path_home :maxlevel . 1)
+                             (path_work :maxlevel . 1)
+                             (path_personal :maxlevel . 1)))
+
+(when *is-a-mac*
+  (defvar path_sha1sum (concat user-emacs-directory "packages/sha1sum.exe"))
+  (setq org-mobile-checksum-binary path_sha1sum))
 
 (defun ispell-word-then-abbrev (p)
   "Call `ispell-word'. Then create an abbrev for the correction made.

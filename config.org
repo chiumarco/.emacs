@@ -57,6 +57,12 @@ Changes =lambda= to an actual symbol and a few others as well, only in the GUI v
   )
 #+END_SRC
 
+*** Stretch cursor
+Make Cursor the width of the character it is nder full width of a TAB
+#+BEGIN_SRC emacs-lisp
+(setq x-stretch-cursor t)
+#+END_SRC
+
 ** Functionality
 
 *** Disable backups and auto-saves
@@ -69,6 +75,19 @@ I don't use either, you might want to turn those from =nil= to =t= if you do.
 *** Change yes-or-no questions into y-or-n questions
 #+BEGIN_SRC emacs-lisp
 (defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+** User Info
+
+#+BEGIN_SRC emacs-lisp
+(setq user-full-name "Marco Chiu")
+(setq user-mail-address "chiumarco@gmail.com")
+#+END_SRC
+
+** Check Mac or Windows
+#+BEGIN_SRC emacs-lisp
+(defconst *is-a-mac* (eq system-type 'darwin))
+(defconst *is-a-win* (eq system-type 'windows-nt))
 #+END_SRC
 
 
@@ -238,6 +257,107 @@ change the numbers to suit your liking, I find 5 to be enough.
 #+END_SRC
 
 
+* Moving around emacs
+
+** Ivy
+Ivy, a generic completion mechanism for Emacs.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :ensure t)
+#+END_SRC
+
+** Counsel
+Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
+
+#+BEGIN_SRC emacs-lisp
+(use-package counsel
+  :ensure t
+  )
+#+END_SRC
+
+** Swiper
+Swiper, an Ivy-enhanced alternative to isearch.
+
+#+BEGIN_SRC emacs-lisp
+(use-package swiper
+  :ensure t
+  :config
+  (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (global-set-key "\C-s" 'swiper)
+    (global-set-key (kbd "C-c C-r") 'ivy-resume)
+    (global-set-key (kbd "<f6>") 'ivy-resume)
+    (global-set-key (kbd "M-x") 'counsel-M-x)
+    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+    (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+    (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+    (global-set-key (kbd "<f1> l") 'counsel-load-library)
+    (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+    (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+    (global-set-key (kbd "C-c g") 'counsel-git)
+    (global-set-key (kbd "C-c j") 'counsel-git-grep)
+    (global-set-key (kbd "C-c k") 'counsel-ag)
+    (global-set-key (kbd "C-x l") 'counsel-locate)
+    (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+    )
+#+END_SRC
+
+** scrolling and why does the screen move
+I don't know to be honest, but this little bit of code makes scrolling with emacs a lot nicer.
+#+BEGIN_SRC emacs-lisp
+  (setq scroll-conservatively 100)
+#+END_SRC
+
+** which-key
+Emacs package that displays available keybindings in popup.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :ensure t
+    :config
+      (which-key-mode))
+#+END_SRC
+
+** For windows operation
+*** Winner Mode
+Winner Mode is a global minor mode. When activated, it allows you to =undo= (and =redo=) changes in the window configuration with the key commands =C-c left= and =C-c right=.
+
+#+BEGIN_SRC emacs-lisp
+(require 'winner)
+(winner-mode 1)
+#+END_SRC
+
+*** Following window splits
+After you split a window, your focus remains in the previous one.
+This annoyed me so much I wrote these two, they take care of it.
+#+BEGIN_SRC emacs-lisp
+  (defun split-and-follow-horizontally ()
+    (interactive)
+    (split-window-below)
+    (balance-windows)
+    (other-window 1))
+  (global-set-key (kbd "C-x 2") 'split-and-follow-horizontally)
+
+  (defun split-and-follow-vertically ()
+    (interactive)
+    (split-window-right)
+    (balance-windows)
+    (other-window 1))
+  (global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
+#+END_SRC
+
+*** Windows move
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "M-[") 'windmove-up)
+(global-set-key (kbd "M-/") 'windmove-down)
+(global-set-key (kbd "M-'") 'windmove-right)
+(global-set-key (kbd "M-;") 'windmove-left)
+(global-set-key (kbd "M-:") 'comment-line)
+#+END_SRC
+
+
 * Programming
 
 ** Markdown
@@ -265,7 +385,6 @@ npm install -g vmd
     (setq exec-path (append '("/usr/local/bin" "/usr/bin") exec-path)))
   (require 'vmd-mode)
 #+END_SRC
-
 
 ** Matlab
 
@@ -367,34 +486,38 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
 ** Org Mode File
 
 #+BEGIN_SRC emacs-lisp
-  (when *is-a-mac*
-    (setq org-directory "~/Dropbox/Emacs/Org")
-    (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg"))
+    (when *is-a-mac*
+      (setq org-directory "~/Dropbox/Emacs/Org")
+      (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg"))
+
+    (when *is-a-win*
+      (setq org-directory "C:/Users/Marco.Chiu/Dropbox/Emacs/Org")
+      (setq org-mobile-directory "C:/Users/Marco.Chiu/Dropbox/Apps/MobileOrg"))
+
+    (defvar path_inbox (concat org-directory "/inbox.org"))
+    (defvar path_home (concat org-directory "/home.org"))
+    (defvar path_work (concat org-directory "/work.org"))
+    (defvar path_personal (concat org-directory "/personal.org"))
+
+    (setq org-default-notes-file path_inbox)
+    (setq org-mobile-inbox-for-pull path_inbox)
+    (setq org-mobile-files (list path_home path_work path_personal))
+    (setq org-agenda-files (list path_home path_work path_personal))
+
+    (setq org-capture-templates
+          '(("t" "Todo-Personal" entry (file+headline path_personal "Personal Tasks:") "* TODO %?\n")
+            ("h" "Todo-Home" entry (file+headline path_home "Home Tasks:") "* TODO %?\n")
+            ("w" "Todo-Work" entry (file+headline path_work "Work Tasks:") "* TODO %?\n")
+            ("j" "Todo" entry (file+headline path_inbox "Tasks" ) "* TODO %?\n")
+            ))
+
+    (setq org-refile-targets '((path_home :maxlevel . 1)
+                               (path_work :maxlevel . 1)
+                               (path_personal :maxlevel . 1)))
 
   (when *is-a-win*
-    (setq org-directory "C:/Users/Marco.Chiu/Dropbox/Emacs/Org")
-    (setq org-mobile-directory "C:/Users/Marco.Chiu/Dropbox/Apps/MobileOrg"))
-
-  (defvar path_inbox (concat org-directory "/inbox.org"))
-  (defvar path_home (concat org-directory "/home.org"))
-  (defvar path_work (concat org-directory "/work.org"))
-  (defvar path_personal (concat org-directory "/personal.org"))
-
-  (setq org-default-notes-file path_inbox)
-  (setq org-mobile-inbox-for-pull path_inbox)
-  (setq org-mobile-files (list path_home path_work path_personal))
-  (setq org-agenda-files (list path_home path_work path_personal))
-
-  (setq org-capture-templates
-        '(("t" "Todo-Personal" entry (file+headline path_personal "Personal Tasks:") "* TODO %?\n")
-          ("h" "Todo-Home" entry (file+headline path_home "Home Tasks:") "* TODO %?\n")
-          ("w" "Todo-Work" entry (file+headline path_work "Work Tasks:") "* TODO %?\n")
-          ("j" "Todo" entry (file+headline path_inbox "Tasks" ) "* TODO %?\n")
-          ))
-
-  (setq org-refile-targets '((path_home :maxlevel . 1)
-                             (path_work :maxlevel . 1)
-                             (path_personal :maxlevel . 1)))
+    (defvar path_sha1sum (concat user-emacs-directory "packages/sha1sum.exe"))
+    (setq org-mobile-checksum-binary path_sha1sum))
 #+END_SRC
 
 
@@ -432,4 +555,10 @@ With prefix P, create local abbrev. Otherwise it will be global."
   :init (setq url-automatic-caching t))
 #+END_SRC
 
+** Try
+ Try Emacs packages without installing them.
 
+#+BEGIN_SRC emacs-lisp
+(use-package try
+  :ensure t)
+#+END_SRC
