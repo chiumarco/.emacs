@@ -1,6 +1,5 @@
 
 * Basic Interface Settings
-
 These are setting that do not depend on packages and are built-in enhancements to the UI.
 
 ** Check Mac or Windows
@@ -556,7 +555,6 @@ npm install -g vmd
 #+END_SRC
 
 
-
 * Git integration
 
 #+BEGIN_SRC emacs-lisp
@@ -583,12 +581,13 @@ npm install -g vmd
 
 ** Line wrapping
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'org-mode-hook
-            '(lambda ()
-               (visual-line-mode 1)
-               ;; make the lines in the buffer wrap around the edges of the screen.
-               (toggle-word-wrap)
-               (toggle-truncate-lines)))
+    (add-hook 'org-mode-hook
+              '(lambda ()
+                 (visual-line-mode 1)
+                 ;; make the lines in the buffer wrap around the edges of the screen.
+                 ;; (toggle-word-wrap)
+                 ;; (toggle-truncate-lines)
+                 ))
 #+END_SRC
 
 ** Keybindings
@@ -618,31 +617,31 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
 ** Agenda
 
 #+BEGIN_SRC emacs-lisp
-;; Insert timestamp when TODO state changed into DONE state
-(setq org-log-done 'time)
-;; Uses only one star and indents text to line with the heading:
-(setq org-startup-indented t)
-;; Only one occurrence is shown, either today or the nearest into the future
-(setq org-agenda-repeating-timestamp-show-all nil)
-;; Open agenda in current window
-(setq org-agenda-window-setup (quote current-window))
-;; Warn me of any deadlines in next 7 days
-(setq org-deadline-warning-days 7)
-;; Don't show tasks as scheduled if they are already shown as a deadline
-(setq org-agenda-skip-scheduled-if-deadline-is-shown t)
-;; Don't give awarning colour to tasks with impending deadlines
-;; if they are scheduled to be done
-(setq org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled))
-;; Don't show tasks that are scheduled or have deadlines in the
-;; Normal todo list
-(setq org-agenda-todo-ignore-deadlines (quote all))
-(setq org-agenda-todo-ignore-scheduled (quote all))
+  ;; Insert timestamp when TODO state changed into DONE state
+  (setq org-log-done 'time)
+  ;; Uses only one star and indents text to line with the heading:
+  (setq org-startup-indented t)
+  ;; Only one occurrence is shown, either today or the nearest into the future
+  (setq org-agenda-repeating-timestamp-show-all nil)
+  ;; Open agenda in current window
+  (setq org-agenda-window-setup (quote current-window))
+  ;; Warn me of any deadlines in next 7 days
+  (setq org-deadline-warning-days 7)
+  ;; Don't show tasks as scheduled if they are already shown as a deadline
+  (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+  ;; Don't give awarning colour to tasks with impending deadlines
+  ;; if they are scheduled to be done
+  (setq org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled))
+  ;; Don't show tasks that are scheduled or have deadlines in the
+  ;; Normal todo list
+  (setq org-agenda-todo-ignore-deadlines (quote all))
+  (setq org-agenda-todo-ignore-scheduled (quote all))
 
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)"  "|" "DONE(d)")
-	(sequence "WAITING(w)" "INACTIVE(i)" "MEETING(m)" "|" "CANCELLED(c)" )))
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)"  "|" "DONE(d)")
+          (sequence "WAITING(w)" "INACTIVE(i)" "MEETING(m)" "|" "CANCELLED(c)" )))
 
-(require 'org-mobile)
+  (require 'org-mobile)
 #+END_SRC
 
 ** Org Mode File

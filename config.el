@@ -39,6 +39,7 @@
 (setq user-full-name "Marco Chiu")
 (setq user-mail-address "chiumarco@gmail.com")
 
+(setq leuven-scale-org-agenda-structure nil)
 (load-theme 'leuven t)
 
 ;; Ensure that themes will be applied even if they have not been customized
@@ -318,8 +319,9 @@
           '(lambda ()
              (visual-line-mode 1)
              ;; make the lines in the buffer wrap around the edges of the screen.
-             (toggle-word-wrap)
-             (toggle-truncate-lines)))
+             ;; (toggle-word-wrap)
+             ;; (toggle-truncate-lines)
+             ))
 
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
