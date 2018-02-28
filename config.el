@@ -224,7 +224,7 @@
                           (mode . css-mode)))
            ("Subversion" (name . "\*svn"))
            ("Magit" (name . "\*magit"))
-           ("ERC" (mode . erc-mode))
+           ("Markdown" (filename . ".md"))
            ("Help" (or (name . "\*Help\*")
                        (name . "\*Apropos\*")
                        (name . "\*info\*"))))))
