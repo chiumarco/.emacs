@@ -3,7 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "treemacs" "treemacs.el" (23187 44638 0 0))
+;;;### (autoloads nil "treemacs" "treemacs.el" (23191 54134 0 0))
 ;;; Generated autoloads from treemacs.el
 
 (autoload 'treemacs-toggle "treemacs" "\
@@ -67,7 +67,7 @@ Call `treemacs-toggle' if it is not.
 
 ;;;***
 
-;;;### (autoloads nil "treemacs-mode" "treemacs-mode.el" (23187 44638
+;;;### (autoloads nil "treemacs-mode" "treemacs-mode.el" (23191 54134
 ;;;;;;  0 0))
 ;;; Generated autoloads from treemacs-mode.el
 
@@ -79,7 +79,7 @@ A major mode for displaying the file system in a tree layout.
 ;;;***
 
 ;;;### (autoloads nil "treemacs-mouse-interface" "treemacs-mouse-interface.el"
-;;;;;;  (23187 44638 0 0))
+;;;;;;  (23191 54134 0 0))
 ;;; Generated autoloads from treemacs-mouse-interface.el
 
 (autoload 'treemacs-node-buffer-and-position "treemacs-mouse-interface" "\
@@ -91,8 +91,8 @@ ignore any prefix argument.
 
 ;;;***
 
-;;;### (autoloads nil "treemacs-persist" "treemacs-persist.el" (23187
-;;;;;;  44638 0 0))
+;;;### (autoloads nil "treemacs-persist" "treemacs-persist.el" (23191
+;;;;;;  54134 0 0))
 ;;; Generated autoloads from treemacs-persist.el
 
 (autoload 'treemacs--restore "treemacs-persist" "\
@@ -107,7 +107,7 @@ Restore the entire treemacs state saved by `treeemacs--persist'.
 ;;;;;;  "treemacs-filewatch-mode.el" "treemacs-follow-mode.el" "treemacs-impl.el"
 ;;;;;;  "treemacs-interface.el" "treemacs-macros.el" "treemacs-pkg.el"
 ;;;;;;  "treemacs-structure.el" "treemacs-tag-follow-mode.el" "treemacs-tags.el"
-;;;;;;  "treemacs-visuals.el") (23187 44638 0 0))
+;;;;;;  "treemacs-visuals.el") (23191 54134 0 0))
 
 ;;;***
 

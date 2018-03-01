@@ -36,10 +36,21 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+(when *is-a-win*
+  (setq dynamic-library-alist
+        '((xpm "libxpm.dll" "xpm4.dll" "libXpm-nox4.dll")
+          (png "libpng12d.dll" "libpng12.dll" "libpng.dll" "libpng13d.dll" "libpng13.dll" "libpng16-16.dll")
+          (jpeg "jpeg62.dll" "libjpeg.dll" "jpeg-62.dll" "jpeg.dll")
+          (tiff "libtiff3.dll" "libtiff.dll")
+          (gif "giflib4.dll" "libungif4.dll" "libungif.dll")
+          (svg "librsvg-2-2.dll")
+          (gdk-pixbuf "libgdk_pixbuf-2.0-0.dll")
+          (glib "libglib-2.0-0.dll")
+          (gobject "libgobject-2.0-0.dll"))))
+
 (setq user-full-name "Marco Chiu")
 (setq user-mail-address "chiumarco@gmail.com")
 
-(setq leuven-scale-org-agenda-structure nil)
 (load-theme 'leuven t)
 
 ;; Ensure that themes will be applied even if they have not been customized
@@ -317,11 +328,7 @@
 
 (add-hook 'org-mode-hook
           '(lambda ()
-             (visual-line-mode 1)
-             ;; make the lines in the buffer wrap around the edges of the screen.
-             ;; (toggle-word-wrap)
-             ;; (toggle-truncate-lines)
-             ))
+             (visual-line-mode 1)))
 
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)

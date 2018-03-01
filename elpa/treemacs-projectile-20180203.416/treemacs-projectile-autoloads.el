@@ -4,7 +4,7 @@
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
 ;;;### (autoloads nil "treemacs-projectile" "treemacs-projectile.el"
-;;;;;;  (23187 44640 0 0))
+;;;;;;  (23191 54136 0 0))
 ;;; Generated autoloads from treemacs-projectile.el
 
 (autoload 'treemacs-projectile "treemacs-projectile" "\

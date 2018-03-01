@@ -82,6 +82,20 @@ I don't use either, you might want to turn those from =nil= to =t= if you do.
 (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
+*** Display image under windows
+#+BEGIN_SRC emacs-lisp
+  (when *is-a-win*
+    (setq dynamic-library-alist
+          '((xpm "libxpm.dll" "xpm4.dll" "libXpm-nox4.dll")
+            (png "libpng12d.dll" "libpng12.dll" "libpng.dll" "libpng13d.dll" "libpng13.dll" "libpng16-16.dll")
+            (jpeg "jpeg62.dll" "libjpeg.dll" "jpeg-62.dll" "jpeg.dll")
+            (tiff "libtiff3.dll" "libtiff.dll")
+            (gif "giflib4.dll" "libungif4.dll" "libungif.dll")
+            (svg "librsvg-2-2.dll")
+            (gdk-pixbuf "libgdk_pixbuf-2.0-0.dll")
+            (glib "libglib-2.0-0.dll")
+            (gobject "libgobject-2.0-0.dll"))))
+#+END_SRC
 ** User Info
 
 #+BEGIN_SRC emacs-lisp
@@ -583,11 +597,7 @@ npm install -g vmd
 #+BEGIN_SRC emacs-lisp
     (add-hook 'org-mode-hook
               '(lambda ()
-                 (visual-line-mode 1)
-                 ;; make the lines in the buffer wrap around the edges of the screen.
-                 ;; (toggle-word-wrap)
-                 ;; (toggle-truncate-lines)
-                 ))
+                 (visual-line-mode 1)))
 #+END_SRC
 
 ** Keybindings
