@@ -31,22 +31,27 @@
 
 (setq x-stretch-cursor t)
 
+(use-package pangu-spacing
+  :ensure t
+  :init
+  (global-pangu-spacing-mode 1))
+
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(when *is-a-win*
-  (setq dynamic-library-alist
-        '((xpm "libxpm.dll" "xpm4.dll" "libXpm-nox4.dll")
-          (png "libpng12d.dll" "libpng12.dll" "libpng.dll" "libpng13d.dll" "libpng13.dll" "libpng16-16.dll")
-          (jpeg "jpeg62.dll" "libjpeg.dll" "jpeg-62.dll" "jpeg.dll")
-          (tiff "libtiff3.dll" "libtiff.dll")
-          (gif "giflib4.dll" "libungif4.dll" "libungif.dll")
-          (svg "librsvg-2-2.dll")
-          (gdk-pixbuf "libgdk_pixbuf-2.0-0.dll")
-          (glib "libglib-2.0-0.dll")
-          (gobject "libgobject-2.0-0.dll"))))
+;; (when *is-a-win*
+;;   (setq dynamic-library-alist
+;;         '((xpm "libxpm.dll" "xpm4.dll" "libXpm-nox4.dll")
+;;           (png "libpng12d.dll" "libpng12.dll" "libpng.dll" "libpng13d.dll" "libpng13.dll" "libpng16-16.dll")
+;;           (jpeg "jpeg62.dll" "libjpeg.dll" "jpeg-62.dll" "jpeg.dll")
+;;           (tiff "libtiff3.dll" "libtiff.dll")
+;;           (gif "giflib4.dll" "libungif4.dll" "libungif.dll")
+;;           (svg "librsvg-2-2.dll")
+;;           (gdk-pixbuf "libgdk_pixbuf-2.0-0.dll")
+;;           (glib "libglib-2.0-0.dll")
+;;           (gobject "libgobject-2.0-0.dll"))))
 
 (setq user-full-name "Marco Chiu")
 (setq user-mail-address "chiumarco@gmail.com")
@@ -153,7 +158,8 @@
   :config
       (setq treemacs-header-function #'treemacs-projectile-create-header)
   :bind (:map global-map
-              ([f9] . treemacs-projectile)))
+              ([f9] . treemacs-projectile)
+              ([f9] . treemacs-projectile-toggle)))
 
 (use-package ivy
   :ensure t)

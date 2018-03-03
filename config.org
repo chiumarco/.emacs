@@ -68,6 +68,14 @@ Make Cursor the width of the character it is nder full width of a TAB
 (setq x-stretch-cursor t)
 #+END_SRC
 
+*** Add spacing between english and chinese word
+#+BEGIN_SRC emacs-lisp
+  (use-package pangu-spacing
+    :ensure t
+    :init
+    (global-pangu-spacing-mode 1))
+#+END_SRC
+
 ** Functionality
 
 *** Disable backups and auto-saves
@@ -84,17 +92,17 @@ I don't use either, you might want to turn those from =nil= to =t= if you do.
 
 *** Display image under windows
 #+BEGIN_SRC emacs-lisp
-  (when *is-a-win*
-    (setq dynamic-library-alist
-          '((xpm "libxpm.dll" "xpm4.dll" "libXpm-nox4.dll")
-            (png "libpng12d.dll" "libpng12.dll" "libpng.dll" "libpng13d.dll" "libpng13.dll" "libpng16-16.dll")
-            (jpeg "jpeg62.dll" "libjpeg.dll" "jpeg-62.dll" "jpeg.dll")
-            (tiff "libtiff3.dll" "libtiff.dll")
-            (gif "giflib4.dll" "libungif4.dll" "libungif.dll")
-            (svg "librsvg-2-2.dll")
-            (gdk-pixbuf "libgdk_pixbuf-2.0-0.dll")
-            (glib "libglib-2.0-0.dll")
-            (gobject "libgobject-2.0-0.dll"))))
+  ;; (when *is-a-win*
+  ;;   (setq dynamic-library-alist
+  ;;         '((xpm "libxpm.dll" "xpm4.dll" "libXpm-nox4.dll")
+  ;;           (png "libpng12d.dll" "libpng12.dll" "libpng.dll" "libpng13d.dll" "libpng13.dll" "libpng16-16.dll")
+  ;;           (jpeg "jpeg62.dll" "libjpeg.dll" "jpeg-62.dll" "jpeg.dll")
+  ;;           (tiff "libtiff3.dll" "libtiff.dll")
+  ;;           (gif "giflib4.dll" "libungif4.dll" "libungif.dll")
+  ;;           (svg "librsvg-2-2.dll")
+  ;;           (gdk-pixbuf "libgdk_pixbuf-2.0-0.dll")
+  ;;           (glib "libglib-2.0-0.dll")
+  ;;           (gobject "libgobject-2.0-0.dll"))))
 #+END_SRC
 ** User Info
 
@@ -228,45 +236,46 @@ change the numbers to suit your liking, I find 5 to be enough.
 
 * File manager
 
-** treemacs
+** Treemacs - a tree layout file explorer for Emacs
 
 #+BEGIN_SRC emacs-lisp
-  (use-package treemacs
-    :ensure t
-    :defer t
-    :config
-    (progn
-      (setq treemacs-follow-after-init t
-            treemacs-width 35
-            treemacs-indentation 2
-            treemacs-collapse-dirs (if (executable-find "python") 3 0)
-            treemacs-silent-refresh nil
-            treemacs-change-root-without-asking nil
-            treemacs-sorting 'alphabetic-desc
-            treemacs-show-hidden-files t
-            treemacs-never-persist nil
-            treemacs-is-never-other-window nil
-            treemacs-goto-tag-strategy 'refetch-index)
+      (use-package treemacs
+        :ensure t
+        :defer t
+        :config
+        (progn
+          (setq treemacs-follow-after-init t
+                treemacs-width 35
+                treemacs-indentation 2
+                treemacs-collapse-dirs (if (executable-find "python") 3 0)
+                treemacs-silent-refresh nil
+                treemacs-change-root-without-asking nil
+                treemacs-sorting 'alphabetic-desc
+                treemacs-show-hidden-files t
+                treemacs-never-persist nil
+                treemacs-is-never-other-window nil
+                treemacs-goto-tag-strategy 'refetch-index)
 
-      (treemacs-follow-mode t)
-      (treemacs-filewatch-mode t)
-      (pcase (cons (not (null (executable-find "git")))
-                   (not (null (executable-find "python3"))))
-        (`(t . t)
-         (treemacs-git-mode 'extended))
-        (`(t . _)
-         (treemacs-git-mode 'simple))))
-    :bind
-    (:map global-map
-          ([f8] . treemacs-toggle)))
+          (treemacs-follow-mode t)
+          (treemacs-filewatch-mode t)
+          (pcase (cons (not (null (executable-find "git")))
+                       (not (null (executable-find "python3"))))
+            (`(t . t)
+             (treemacs-git-mode 'extended))
+            (`(t . _)
+             (treemacs-git-mode 'simple))))
+        :bind
+        (:map global-map
+              ([f8] . treemacs-toggle)))
 
-  (use-package treemacs-projectile
-    :defer t
-    :ensure t
-    :config
-        (setq treemacs-header-function #'treemacs-projectile-create-header)
-    :bind (:map global-map
-                ([f9] . treemacs-projectile)))
+      (use-package treemacs-projectile
+        :defer t
+        :ensure t
+        :config
+            (setq treemacs-header-function #'treemacs-projectile-create-header)
+        :bind (:map global-map
+                    ([f9] . treemacs-projectile)
+                    ([f9] . treemacs-projectile-toggle)))
 #+END_SRC
 
 
