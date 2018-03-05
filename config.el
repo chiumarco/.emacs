@@ -36,22 +36,14 @@
   :init
   (global-pangu-spacing-mode 1))
 
+(add-hook 'prog-mode-hook 'linum-mode)
+
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; (when *is-a-win*
-;;   (setq dynamic-library-alist
-;;         '((xpm "libxpm.dll" "xpm4.dll" "libXpm-nox4.dll")
-;;           (png "libpng12d.dll" "libpng12.dll" "libpng.dll" "libpng13d.dll" "libpng13.dll" "libpng16-16.dll")
-;;           (jpeg "jpeg62.dll" "libjpeg.dll" "jpeg-62.dll" "jpeg.dll")
-;;           (tiff "libtiff3.dll" "libtiff.dll")
-;;           (gif "giflib4.dll" "libungif4.dll" "libungif.dll")
-;;           (svg "librsvg-2-2.dll")
-;;           (gdk-pixbuf "libgdk_pixbuf-2.0-0.dll")
-;;           (glib "libglib-2.0-0.dll")
-;;           (gobject "libgobject-2.0-0.dll"))))
+(server-start)
 
 (setq user-full-name "Marco Chiu")
 (setq user-mail-address "chiumarco@gmail.com")
@@ -92,8 +84,8 @@
     (setq powerline-default-separator (quote arrow))
     (spaceline-spacemacs-theme))
 
-(line-number-mode 1)
-(column-number-mode 1)
+(line-number-mode t)
+(column-number-mode t)
 
 (setq display-time-24hr-format t)
 (setq display-time-format "%H:%M - %d %B %Y")
@@ -104,7 +96,8 @@
   :ensure t
   :init
   (diminish 'which-key-mode)
-  (diminish 'linum-relative-mode))
+  ;(diminish 'linum-relative-mode)
+  )
 
 (use-package projectile
   :ensure t
@@ -302,6 +295,11 @@
 
 (electric-pair-mode t)
 
+(custom-set-variables
+ '(ediff-diff-options "-w")
+ '(ediff-split-window-function (quote split-window-horizontally))
+ '(ediff-window-setup-function (quote ediff-setup-windows-plain)))
+
 (use-package markdown-mode
   :ensure t
   :commands (markdown-mode gfm-mode)
@@ -324,6 +322,107 @@
   :config
   (setq magit-push-always-verify nil)
   (setq git-commit-summary-max-length 50))
+
+(require 'epa-file)
+(custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
+(epa-file-enable)
+
+(defun offlineimap-get-password (host port)
+  (require 'netrc)
+  (let* ((netrc (netrc-parse (expand-file-name "~/.authinfo.gpg")))
+         (hostentry (netrc-machine netrc host port port)))
+    (when hostentry (netrc-get hostentry "password"))))
+
+(require 'mu4e)                      ; load mu4e
+;; Use mu4e as default mail agent
+(setq mail-user-agent 'mu4e-user-agent)
+;; Mail folder set to ~/Maildir
+(setq mu4e-maildir "~/Maildir")         ; NOTE: should not be symbolic link
+;; Fetch mail by offlineimap
+(setq mu4e-get-mail-command "offlineimap")
+;; Fetch mail in 300 sec interval
+(setq mu4e-update-interval 300)
+
+;; (setq mu4e-hide-index-messages t)
+
+;; folder for sent messages
+(setq mu4e-sent-folder   "/Gmail/[Gmail].Sent Mail")
+;; unfinished messages
+(setq mu4e-drafts-folder "/Gmail/[Gmail].Drafts")
+;; trashed messages
+(setq mu4e-trash-folder  "/Gmail/[Gmail].Trash")
+;; saved messages
+;; (setq mu4e-trash-folder  "/Gmail/Archive")
+
+;; the maildirs you use frequently; access them with 'j' ('jump')
+(setq   mu4e-maildir-shortcuts
+        '(("/Gmail/INBOX"               . ?i)
+          ("/Gmail/[Gamil].Sent Mail"   . ?s)
+          ("/Gmail/[Gmail].Trash"       . ?t)))
+
+
+;; the headers to show in the headers list -- a pair of a field
+;; and its width, with `nil' meaning 'unlimited'
+;; (better only use that for the last field.
+;; These are the defaults:
+(setq mu4e-headers-fields
+      '( (:date          .  25)    ;; alternatively, use :human-date
+         (:flags         .   6)
+         (:from          .  22)
+         (:subject       .  nil))) ;; alternatively, use :thread-subject
+
+(require 'mu4e-contrib)
+(setq mu4e-html2text-command 'mu4e-shr2text)
+;; try to emulate some of the eww key-bindings
+(add-hook 'mu4e-view-mode-hook
+           (lambda ()
+           (local-set-key (kbd "<tab>") 'shr-next-link)
+           (local-set-key (kbd "<backtab>") 'shr-previous-link)))
+
+;; Call EWW to display HTML messages
+(defun jcs-view-in-eww (msg)
+  (eww-browse-url (concat "file://" (mu4e~write-body-to-html msg))))
+;; Arrange to view messages in either the default browser or EWW
+(add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+(add-to-list 'mu4e-view-actions '("Eww view" . jcs-view-in-eww) t)
+ 
+;; From Ben Maughan: Get some Org functionality in compose buffer
+(add-hook 'message-mode-hook 'turn-on-orgtbl)
+(add-hook 'message-mode-hook 'turn-on-orgstruct++)
+
+;; Set format=flowed
+;; mu4e sets up visual-line-mode and also fill (M-q) to do the right thing
+;; each paragraph is a single long line; at sending, emacs will add the
+;; special line continuation characters.
+(setq mu4e-compose-format-flowed t)
+
+;; every new email composition gets its own frame! (window)
+;;(setq mu4e-compose-in-new-frame t)
+
+;; give me ISO(ish) format date-time stamps in the header list
+(setq mu4e-headers-date-format "%Y-%m-%d %H:%M")
+
+;; show full addresses in view message (instead of just names)
+;; toggle per name with M-RET
+(setq mu4e-view-show-addresses t)
+
+
+(setq mu4e-view-show-images t)
+
+;; SMTP setup
+(setq message-send-mail-function 'smtpmail-send-it
+      smtpmail-stream-type 'starttls
+      starttls-use-gnutls t)
+;; Personal info
+(setq user-full-name "Marco Chiu")          ; FIXME: add your info here
+(setq user-mail-address "chiumarco@gmail.com"); FIXME: add your info here
+;; gmail setup
+(setq smtpmail-smtp-server "smtp.gmail.com")
+(setq smtpmail-smtp-service 587)
+(setq smtpmail-smtp-user "chiumarco@gmail.com") ; FIXME: add your gmail addr here
+
+(setq mu4e-compose-signature "Sent from my emacs.")
+(global-set-key (kbd "<f6>") 'mu4e)
 
 ;(setq org-ellipsis " ")
 (setq org-src-fontify-natively t)
