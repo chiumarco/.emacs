@@ -346,12 +346,44 @@
 
   ;; (setq mu4e-hide-index-messages t)
 
+
+  (setq mu4e-contexts
+ `( ,(make-mu4e-context
+     :name "Gmail"
+     :match-func (lambda (msg) (when msg
+       (string-prefix-p "/Gmail" (mu4e-message-field msg :maildir))))
+     :vars '(
+       (mu4e-sent-folder . "/Gmail/[Gmail].Sent Mail")
+       (mu4e-trash-folder . "/Gmail/[Gmail].Trash")
+       (mu4e-drafts-folder . "/Gmail/[Gmail].Drafts")
+       ))
+   ,(make-mu4e-context
+     :name "Hotmail"
+     :match-func (lambda (msg) (when msg
+       (string-prefix-p "/Hotmail" (mu4e-message-field msg :maildir))))
+     :vars '(
+       (mu4e-sent-folder . "/Hotmail/Sent")
+       (mu4e-trash-folder . "/Hotmail/Deleted")
+       (mu4e-drafts-folder . "/Hotmail/Drafts")
+       ))
+   ,(make-mu4e-context
+     :name "Yahoo"
+     :match-func (lambda (msg) (when msg
+       (string-prefix-p "/Yahoo" (mu4e-message-field msg :maildir))))
+     :vars '(
+       (mu4e-sent-folder . "/Yahoo/Sent")
+       (mu4e-trash-folder . "/Yahoo/Deleted Items")
+       (mu4e-drafts-folder . "/Yahoo/Draft")
+       ))
+   ))
+
+
   ;; folder for sent messages
-  (setq mu4e-sent-folder   "/Gmail/[Gmail].Sent Mail")
+  ;;(setq mu4e-sent-folder   "/Gmail/[Gmail].Sent Mail")
   ;; unfinished messages
-  (setq mu4e-drafts-folder "/Gmail/[Gmail].Drafts")
+  ;;(setq mu4e-drafts-folder "/Gmail/[Gmail].Drafts")
   ;; trashed messages
-  (setq mu4e-trash-folder  "/Gmail/[Gmail].Trash")
+  ;;(setq mu4e-trash-folder  "/Gmail/[Gmail].Trash")
   ;; saved messages
   ;; (setq mu4e-trash-folder  "/Gmail/Archive")
 
