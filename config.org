@@ -81,6 +81,16 @@ Make Cursor the width of the character it is nder full width of a TAB
 (add-hook 'prog-mode-hook 'linum-mode)
 #+END_SRC
 
+*** Toggle line spacing command
+#+BEGIN_SRC emacs-lisp
+  (defun toggle-line-spacing ()
+    "Toggle line spacing between no extra space to extra half line height."
+    (interactive)
+    (if line-spacing
+        (setq line-spacing nil)
+      (setq line-spacing 0.5))
+    (redraw-frame (selected-frame)))
+#+END_SRC
 ** Functionality
 
 *** Disable backups and auto-saves
@@ -288,8 +298,13 @@ Ivy, a generic completion mechanism for Emacs.
 Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
 
 #+BEGIN_SRC emacs-lisp
-(use-package counsel
-  :ensure t
+  (use-package counsel
+    :ensure t
+    :bind
+    ;; pullup menu for kill ring
+    (("M-y" . counsel-yank-pop)
+     :map ivy-minibuffer-map
+     ("M-y" . ivy-next-line))
   )
 #+END_SRC
 
@@ -595,145 +610,136 @@ npm install -g vmd
 * Mu4e
 
 #+BEGIN_SRC emacs-lisp
-  (when *is-a-mac*
-    (require 'epa-file)
-    (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
-    (epa-file-enable)
+    (when *is-a-mac*
+      (require 'epa-file)
+      (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
+      (epa-file-enable)
 
-    (defun offlineimap-get-password (host port)
-      (require 'netrc)
-      (let* ((netrc (netrc-parse (expand-file-name "~/.authinfo.gpg")))
-             (hostentry (netrc-machine netrc host port port)))
-        (when hostentry (netrc-get hostentry "password"))))
+      (defun offlineimap-get-password (host port)
+        (require 'netrc)
+        (let* ((netrc (netrc-parse (expand-file-name "~/.authinfo.gpg")))
+               (hostentry (netrc-machine netrc host port port)))
+          (when hostentry (netrc-get hostentry "password"))))
 
-    (require 'mu4e)                      ; load mu4e
-    ;; Use mu4e as default mail agent
-    (setq mail-user-agent 'mu4e-user-agent)
-    ;; Mail folder set to ~/Maildir
-    (setq mu4e-maildir "~/Maildir")         ; NOTE: should not be symbolic link
-    ;; Fetch mail by offlineimap
-    (setq mu4e-get-mail-command "offlineimap")
-    ;; Fetch mail in 300 sec interval
-    (setq mu4e-update-interval 300)
+      (require 'mu4e)                      ; load mu4e
+      ;; Use mu4e as default mail agent
+      (setq mail-user-agent 'mu4e-user-agent)
+      ;; Mail folder set to ~/Maildir
+      (setq mu4e-maildir "~/Maildir")         ; NOTE: should not be symbolic link
+      ;; Fetch mail by offlineimap
+      (setq mu4e-get-mail-command "offlineimap")
+      ;; Fetch mail in 300 sec interval
+      (setq mu4e-update-interval 300)
 
-    ;; (setq mu4e-hide-index-messages t)
-
-
-    (setq mu4e-contexts
-   `( ,(make-mu4e-context
-       :name "Gmail"
-       :match-func (lambda (msg) (when msg
-         (string-prefix-p "/Gmail" (mu4e-message-field msg :maildir))))
-       :vars '(
-         (mu4e-sent-folder . "/Gmail/[Gmail].Sent Mail")
-         (mu4e-trash-folder . "/Gmail/[Gmail].Trash")
-         (mu4e-drafts-folder . "/Gmail/[Gmail].Drafts")
-         ))
-     ,(make-mu4e-context
-       :name "Hotmail"
-       :match-func (lambda (msg) (when msg
-         (string-prefix-p "/Hotmail" (mu4e-message-field msg :maildir))))
-       :vars '(
-         (mu4e-sent-folder . "/Hotmail/Sent")
-         (mu4e-trash-folder . "/Hotmail/Deleted")
-         (mu4e-drafts-folder . "/Hotmail/Drafts")
-         ))
-     ,(make-mu4e-context
-       :name "Yahoo"
-       :match-func (lambda (msg) (when msg
-         (string-prefix-p "/Yahoo" (mu4e-message-field msg :maildir))))
-       :vars '(
-         (mu4e-sent-folder . "/Yahoo/Sent")
-         (mu4e-trash-folder . "/Yahoo/Deleted Items")
-         (mu4e-drafts-folder . "/Yahoo/Draft")
-         ))
-     ))
+      ;; (setq mu4e-hide-index-messages t)
 
 
-    ;; folder for sent messages
-    ;;(setq mu4e-sent-folder   "/Gmail/[Gmail].Sent Mail")
-    ;; unfinished messages
-    ;;(setq mu4e-drafts-folder "/Gmail/[Gmail].Drafts")
-    ;; trashed messages
-    ;;(setq mu4e-trash-folder  "/Gmail/[Gmail].Trash")
-    ;; saved messages
-    ;; (setq mu4e-trash-folder  "/Gmail/Archive")
+      (setq mu4e-contexts
+     `( ,(make-mu4e-context
+         :name "Gmail"
+         :match-func (lambda (msg) (when msg
+           (string-prefix-p "/Gmail" (mu4e-message-field msg :maildir))))
+         :vars '(
+           (mu4e-sent-folder . "/Gmail/[Gmail].Sent Mail")
+           (mu4e-trash-folder . "/Gmail/[Gmail].Trash")
+           (mu4e-drafts-folder . "/Gmail/[Gmail].Drafts")
+           ))
+       ,(make-mu4e-context
+         :name "Hotmail"
+         :match-func (lambda (msg) (when msg
+           (string-prefix-p "/Hotmail" (mu4e-message-field msg :maildir))))
+         :vars '(
+           (mu4e-sent-folder . "/Hotmail/Sent")
+           (mu4e-trash-folder . "/Hotmail/Deleted")
+           (mu4e-drafts-folder . "/Hotmail/Drafts")
+           ))
+       ,(make-mu4e-context
+         :name "Yahoo"
+         :match-func (lambda (msg) (when msg
+           (string-prefix-p "/Yahoo" (mu4e-message-field msg :maildir))))
+         :vars '(
+           (mu4e-sent-folder . "/Yahoo/Sent")
+           (mu4e-trash-folder . "/Yahoo/Deleted Items")
+           (mu4e-drafts-folder . "/Yahoo/Draft")
+           ))
+       ))
 
-    ;; the maildirs you use frequently; access them with 'j' ('jump')
-    (setq   mu4e-maildir-shortcuts
-            '(("/Gmail/INBOX"               . ?i)
-              ("/Gmail/[Gamil].Sent Mail"   . ?s)
-              ("/Gmail/[Gmail].Trash"       . ?t)))
+      ;; the maildirs you use frequently; access them with 'j' ('jump')
+      (setq   mu4e-maildir-shortcuts
+              '(("/Gmail/INBOX"               . ?i)
+                ("/Gmail/[Gamil].Sent Mail"   . ?s)
+                ("/Gmail/[Gmail].Trash"       . ?t)))
+
+      ;; give me ISO(ish) format date-time stamps in the header list
+      (setq mu4e-headers-date-format "%Y-%m-%d %H:%M")
+      ;; the headers to show in the headers list -- a pair of a field
+      ;; and its width, with `nil' meaning 'unlimited'
+      ;; (better only use that for the last field.
+      ;; These are the defaults:
+      (setq mu4e-headers-fields
+            '( (:date          .  20)    ;; alternatively, use :human-date
+               (:flags         .   5)
+               (:from          .  25)
+               (:subject       .  nil))) ;; alternatively, use :thread-subject
+
+      (require 'mu4e-contrib)
+      (setq mu4e-html2text-command 'mu4e-shr2text)
+      ;; try to emulate some of the eww key-bindings
+      (add-hook 'mu4e-view-mode-hook
+                (lambda ()
+                  (local-set-key (kbd "<tab>") 'shr-next-link)
+                  (local-set-key (kbd "<backtab>") 'shr-previous-link)))
+
+      ;; Call EWW to display HTML messages
+      (defun jcs-view-in-eww (msg)
+        (eww-browse-url (concat "file://" (mu4e~write-body-to-html msg))))
+      ;; Arrange to view messages in either the default browser or EWW
+      (add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+      (add-to-list 'mu4e-view-actions '("Eww view" . jcs-view-in-eww) t)
+
+      ;; use org structures and tables in message mode
+      (add-hook 'message-mode-hook 'turn-on-orgtbl)
+      (add-hook 'message-mode-hook 'turn-on-orgstruct++)
 
 
-    ;; the headers to show in the headers list -- a pair of a field
-    ;; and its width, with `nil' meaning 'unlimited'
-    ;; (better only use that for the last field.
-    ;; These are the defaults:
-    (setq mu4e-headers-fields
-          '( (:date          .  25)    ;; alternatively, use :human-date
-             (:flags         .   6)
-             (:from          .  22)
-             (:subject       .  nil))) ;; alternatively, use :thread-subject
+      ;; Set format=flowed
+      ;; mu4e sets up visual-line-mode and also fill (M-q) to do the right thing
+      ;; each paragraph is a single long line; at sending, emacs will add the
+      ;; special line continuation characters.
+      (setq mu4e-compose-format-flowed t)
 
-    (require 'mu4e-contrib)
-    (setq mu4e-html2text-command 'mu4e-shr2text)
-    ;; try to emulate some of the eww key-bindings
-    (add-hook 'mu4e-view-mode-hook
-              (lambda ()
-                (local-set-key (kbd "<tab>") 'shr-next-link)
-                (local-set-key (kbd "<backtab>") 'shr-previous-link)))
-
-    ;; Call EWW to display HTML messages
-    (defun jcs-view-in-eww (msg)
-      (eww-browse-url (concat "file://" (mu4e~write-body-to-html msg))))
-    ;; Arrange to view messages in either the default browser or EWW
-    (add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
-    (add-to-list 'mu4e-view-actions '("Eww view" . jcs-view-in-eww) t)
-    
-    ;; From Ben Maughan: Get some Org functionality in compose buffer
-    (add-hook 'message-mode-hook 'turn-on-orgtbl)
-    (add-hook 'message-mode-hook 'turn-on-orgstruct++)
-
-    ;; Set format=flowed
-    ;; mu4e sets up visual-line-mode and also fill (M-q) to do the right thing
-    ;; each paragraph is a single long line; at sending, emacs will add the
-    ;; special line continuation characters.
-    (setq mu4e-compose-format-flowed t)
-
-    ;; every new email composition gets its own frame! (window)
-    ;;(setq mu4e-compose-in-new-frame t)
-
-    ;; give me ISO(ish) format date-time stamps in the header list
-    (setq mu4e-headers-date-format "%Y-%m-%d %H:%M")
-
-    ;; show full addresses in view message (instead of just names)
-    ;; toggle per name with M-RET
-    (setq mu4e-view-show-addresses t)
+      ;; every new email composition gets its own frame! (window)
+      ;;(setq mu4e-compose-in-new-frame t)
 
 
-    (setq mu4e-view-show-images t)
 
-    ;; SMTP setup
-    (setq message-send-mail-function 'smtpmail-send-it
-          smtpmail-stream-type 'starttls
-          starttls-use-gnutls t)
-    ;; Personal info
-    (setq user-full-name "Marco Chiu")          ; FIXME: add your info here
-    (setq user-mail-address "chiumarco@gmail.com"); FIXME: add your info here
-    ;; gmail setup
-    (setq smtpmail-smtp-server "smtp.gmail.com")
-    (setq smtpmail-smtp-service 587)
-    (setq smtpmail-smtp-user "chiumarco@gmail.com") ; FIXME: add your gmail addr here
+      ;; show full addresses in view message (instead of just names)
+      ;; toggle per name with M-RET
+      (setq mu4e-view-show-addresses t)
 
-    (setq mu4e-compose-signature "Sent from my emacs.")
 
-    ;; don't keep message buffers after sent message
-    (setq message-kill-buffer-on-exit t)
+      (setq mu4e-view-show-images t)
 
-    (global-set-key (kbd "<f6>") 'mu4e)
+      ;; SMTP setup
+      (setq message-send-mail-function 'smtpmail-send-it
+            smtpmail-stream-type 'starttls
+            starttls-use-gnutls t)
+      ;; Personal info
+      (setq user-full-name "Marco Chiu")          ; FIXME: add your info here
+      (setq user-mail-address "chiumarco@gmail.com"); FIXME: add your info here
+      ;; gmail setup
+      (setq smtpmail-smtp-server "smtp.gmail.com")
+      (setq smtpmail-smtp-service 587)
+      (setq smtpmail-smtp-user "chiumarco@gmail.com") ; FIXME: add your gmail addr here
 
-    )
+      (setq mu4e-compose-signature "Sent from my emacs.")
+
+      ;; don't keep message buffers after sent message
+      (setq message-kill-buffer-on-exit t)
+
+      (global-set-key (kbd "<f6>") 'mu4e)
+
+      )
 #+END_SRC
 
 ** mu4e-alert
@@ -756,6 +762,19 @@ npm install -g vmd
         (mu4e-alert-enable-mode-line-display)
         )
       (run-with-timer 0 60 'gjstein-refresh-mu4e-alert-mode-line)    )
+    )
+#+END_SRC
+
+** mu4e-maildirs-extension
+This extension adds a maildir summary in =mu4e-main-view=.
+
+#+BEGIN_SRC emacs-lisp
+  (when *is-a-mac*
+    (use-package mu4e-maildirs-extension
+      :ensure t
+      :after mu4e
+      :init (mu4e-maildirs-extension)
+      )
     )
 #+END_SRC
 
@@ -883,6 +902,24 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
     (setq org-mobile-checksum-binary path_sha1sum))
 #+END_SRC
 
+** Insert image from url
+#+BEGIN_SRC emacs-lisp
+(require 'url)
+
+(defun insert-image-from-url (&optional url)
+  (interactive)
+  (unless url (setq url (url-get-url-at-point)))
+  (unless url
+    (error "Couldn't find URL."))
+  (let ((buffer (url-retrieve-synchronously url)))
+    (unwind-protect
+         (let ((data (with-current-buffer buffer
+                       (goto-char (point-min))
+                       (search-forward "\n\n")
+                       (buffer-substring (point) (point-max)))))
+           (insert-image (create-image data nil t)))
+      (kill-buffer buffer))))
+#+END_SRC
 
 * Useful tools
 

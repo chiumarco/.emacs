@@ -159,7 +159,12 @@
 
 (use-package counsel
   :ensure t
-  )
+  :bind
+  ;; pullup menu for kill ring
+  (("M-y" . counsel-yank-pop)
+   :map ivy-minibuffer-map
+   ("M-y" . ivy-next-line))
+)
 
 (use-package swiper
   :ensure t
@@ -393,15 +398,16 @@
             ("/Gmail/[Gamil].Sent Mail"   . ?s)
             ("/Gmail/[Gmail].Trash"       . ?t)))
 
-
+  ;; give me ISO(ish) format date-time stamps in the header list
+  (setq mu4e-headers-date-format "%Y-%m-%d %H:%M")
   ;; the headers to show in the headers list -- a pair of a field
   ;; and its width, with `nil' meaning 'unlimited'
   ;; (better only use that for the last field.
   ;; These are the defaults:
   (setq mu4e-headers-fields
-        '( (:date          .  25)    ;; alternatively, use :human-date
-           (:flags         .   6)
-           (:from          .  22)
+        '( (:date          .  20)    ;; alternatively, use :human-date
+           (:flags         .   5)
+           (:from          .  25)
            (:subject       .  nil))) ;; alternatively, use :thread-subject
 
   (require 'mu4e-contrib)
@@ -432,8 +438,7 @@
   ;; every new email composition gets its own frame! (window)
   ;;(setq mu4e-compose-in-new-frame t)
 
-  ;; give me ISO(ish) format date-time stamps in the header list
-  (setq mu4e-headers-date-format "%Y-%m-%d %H:%M")
+
 
   ;; show full addresses in view message (instead of just names)
   ;; toggle per name with M-RET
@@ -481,6 +486,14 @@
       (mu4e-alert-enable-mode-line-display)
       )
     (run-with-timer 0 60 'gjstein-refresh-mu4e-alert-mode-line)    )
+  )
+
+(when *is-a-mac*
+  (use-package mu4e-maildirs-extension
+    :ensure t
+    :after mu4e
+    :init (mu4e-maildirs-extension)
+    )
   )
 
 (defun eww-render-current-buffer ()
