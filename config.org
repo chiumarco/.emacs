@@ -551,6 +551,18 @@ And now to enable it
 (electric-pair-mode t)
 #+END_SRC
 
+** YASnippet
+YASnippet is a template system for Emacs. It allows you to type an abbreviation and automatically expand it into function templates.
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :ensure t
+    :config
+    (use-package yasnippet-snippets
+      :ensure t)
+    (yas-reload-all)
+    (yas-global-mode 1))
+#+END_SRC
+
 
 * Programming
 
@@ -784,10 +796,22 @@ This extension adds a maildir summary in =mu4e-main-view=.
 
 #+BEGIN_SRC emacs-lisp
 (defun eww-render-current-buffer ()
-  "Render HTML in the current buffer with EWW"
+Render HTML in the current buffer with EWW"
+interactive)
+beginning-of-buffer)
+eww-display-html 'utf8 (buffer-name)))
+ND_SRC
+
+ Makes eww more pleasant to use. Run it after eww buffer is loaded.
+EGIN_SRC emacs-lisp
+fun eww-more-readable ()
+Makes eww more pleasant to use. Run it after eww buffer is loaded."
   (interactive)
-  (beginning-of-buffer)
-  (eww-display-html 'utf8 (buffer-name)))
+  (setq eww-header-line-format nil)               ;; removes page title
+  (setq mode-line-format nil)                     ;; removes mode-line
+  (set-window-margins (get-buffer-window) 20 20)  ;; increases size of margins
+  (redraw-display)                                ;; apply mode-line changes
+  (eww-reload 'local))                            ;; apply eww-header changes
 #+END_SRC
 
 
@@ -919,6 +943,42 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
                        (buffer-substring (point) (point-max)))))
            (insert-image (create-image data nil t)))
       (kill-buffer buffer))))
+#+END_SRC
+
+** Babel
+#+BEGIN_SRC emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '(
+     (calc . t)
+     (sh . t)
+     (python . t)
+     (R . t)
+     ))
+#+END_SRC
+
+** LaTex
+#+BEGIN_SRC emacs-lisp
+  (when *is-a-mac*
+    (add-to-list 'org-latex-classes
+                 '("bjmarticle"
+                   "\\documentclass{article}
+                    \\usepackage[utf8]{inputenc}
+                    \\usepackage[T1]{fontenc}
+                    \\usepackage{graphicx}
+                    \\usepackage{longtable}
+                    \\usepackage{hyperref}
+                    \\usepackage{natbib}
+                    \\usepackage{amssymb}
+                    \\usepackage{amsmath}
+                    \\usepackage{geometry}
+                    \\geometry{a4paper,left=2.5cm,top=2cm,right=2.5cm,bottom=2cm,marginparsep=7pt, marginparwidth=.6in}"
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+    )
 #+END_SRC
 
 * Useful tools

@@ -38,6 +38,14 @@
 
 (add-hook 'prog-mode-hook 'linum-mode)
 
+(defun toggle-line-spacing ()
+  "Toggle line spacing between no extra space to extra half line height."
+  (interactive)
+  (if line-spacing
+      (setq line-spacing nil)
+    (setq line-spacing 0.5))
+  (redraw-frame (selected-frame)))
+
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
@@ -300,6 +308,13 @@
 
 (electric-pair-mode t)
 
+(use-package yasnippet
+  :ensure t
+  :config
+  (use-package yasnippet-snippets
+    :ensure t)
+  (yas-reload-all))
+
 (custom-set-variables
  '(ediff-diff-options "-w")
  '(ediff-split-window-function (quote split-window-horizontally))
@@ -382,16 +397,6 @@
        ))
    ))
 
-
-  ;; folder for sent messages
-  ;;(setq mu4e-sent-folder   "/Gmail/[Gmail].Sent Mail")
-  ;; unfinished messages
-  ;;(setq mu4e-drafts-folder "/Gmail/[Gmail].Drafts")
-  ;; trashed messages
-  ;;(setq mu4e-trash-folder  "/Gmail/[Gmail].Trash")
-  ;; saved messages
-  ;; (setq mu4e-trash-folder  "/Gmail/Archive")
-
   ;; the maildirs you use frequently; access them with 'j' ('jump')
   (setq   mu4e-maildir-shortcuts
           '(("/Gmail/INBOX"               . ?i)
@@ -424,10 +429,11 @@
   ;; Arrange to view messages in either the default browser or EWW
   (add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
   (add-to-list 'mu4e-view-actions '("Eww view" . jcs-view-in-eww) t)
-  
-  ;; From Ben Maughan: Get some Org functionality in compose buffer
+
+  ;; use org structures and tables in message mode
   (add-hook 'message-mode-hook 'turn-on-orgtbl)
   (add-hook 'message-mode-hook 'turn-on-orgstruct++)
+
 
   ;; Set format=flowed
   ;; mu4e sets up visual-line-mode and also fill (M-q) to do the right thing
@@ -583,6 +589,22 @@
 (when *is-a-win*
   (defvar path_sha1sum (concat user-emacs-directory "packages/sha1sum.exe"))
   (setq org-mobile-checksum-binary path_sha1sum))
+
+(require 'url)
+
+(defun insert-image-from-url (&optional url)
+  (interactive)
+  (unless url (setq url (url-get-url-at-point)))
+  (unless url
+    (error "Couldn't find URL."))
+  (let ((buffer (url-retrieve-synchronously url)))
+    (unwind-protect
+         (let ((data (with-current-buffer buffer
+                       (goto-char (point-min))
+                       (search-forward "\n\n")
+                       (buffer-substring (point) (point-max)))))
+           (insert-image (create-image data nil t)))
+      (kill-buffer buffer))))
 
 (defun ispell-word-then-abbrev (p)
   "Call `ispell-word'. Then create an abbrev for the correction made.
