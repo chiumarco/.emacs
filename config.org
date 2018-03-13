@@ -124,32 +124,39 @@ Default theme.
 (load-theme 'leuven t)
 #+END_SRC
 
+**  dracula-theme
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package dracula-theme
+  ;;   :ensure t)
+#+END_SRC
+
 ** Function to toggle between light and dark
 
 #+BEGIN_SRC emacs-lisp
-;; Ensure that themes will be applied even if they have not been customized
-(defun reapply-themes ()
-  "Forcibly load the themes listed in `custom-enabled-themes'."
-  (dolist (theme custom-enabled-themes)
-    (unless (custom-theme-p theme)
-      (load-theme theme)))
-  (custom-set-variables `(custom-enabled-themes (quote ,custom-enabled-themes))))
+  ;; Ensure that themes will be applied even if they have not been customized
+  (defun reapply-themes ()
+    "Forcibly load the themes listed in `custom-enabled-themes'."
+    (dolist (theme custom-enabled-themes)
+      (unless (custom-theme-p theme)
+        (load-theme theme)))
+    (custom-set-variables `(custom-enabled-themes (quote ,custom-enabled-themes))))
 
-(add-hook 'after-init-hook 'reapply-themes)
+  (add-hook 'after-init-hook 'reapply-themes)
 
-(defun light ()
-  "Activate a light color theme."
-  (interactive)
-  (load-theme 'leuven t)
-  (reapply-themes)
-  )
+  (defun light ()
+    "Activate a light color theme."
+    (interactive)
+    (load-theme 'leuven t)
+    (reapply-themes)
+    )
 
-(defun dark ()
-  "Activate a dark color theme."
-  (interactive)
-  (load-theme 'leuven-dark t)
-  (reapply-themes)
-  )
+  (defun dark ()
+    "Activate a dark color theme."
+    (interactive)
+    (load-theme 'leuven-dark t)
+    ;;(load-theme 'dracula t)
+    (reapply-themes)
+    )
 #+END_SRC
 
 
@@ -566,6 +573,28 @@ YASnippet is a template system for Emacs. It allows you to type an abbreviation 
 
 * Programming
 
+** Useful function
+*** Comment Block
+#+BEGIN_SRC emacs-lisp
+   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   ;; Full width comment box                                                 ;;
+   ;; from http://irreal.org/blog/?p=374                                     ;;
+   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  (defun bjm-comment-box (b e)
+    "Draw a box comment around the region but arrange for the region to extend to at least the fill column. Place the point after the comment box."
+
+   (interactive "r")
+
+   (let ((e (copy-marker e t)))
+     (goto-char b)
+     (end-of-line)
+     (insert-char ?  (- fill-column (current-column)))
+     (comment-box b e 1)
+     (goto-char e)
+     (set-marker e nil)))
+
+   ;; (global-set-key (kbd "C-c b b") 'bjm-comment-box)
+#+END_SRC
 ** ediff
 #+BEGIN_SRC emacs-lisp
 (custom-set-variables
@@ -981,29 +1010,33 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
     )
 #+END_SRC
 
+
 * Useful tools
 
 ** ispell
+
 #+BEGIN_SRC emacs-lisp
-(defun ispell-word-then-abbrev (p)
-  "Call `ispell-word'. Then create an abbrev for the correction made.
-With prefix P, create local abbrev. Otherwise it will be global."
-  (interactive "P")
-  (let ((before (downcase (or (thing-at-point 'word) "")))
-        after)
-    (call-interactively 'ispell-word)
-    (setq after (downcase (or (thing-at-point 'word) "")))
-    (unless (string= after before)
-      (define-abbrev
-        (if p local-abbrev-table global-abbrev-table) before after))
-      (message "\"%s\" now expands to \"%s\" %sally."
-               before after (if p "loc" "glob"))))
+  (defun ispell-word-then-abbrev (p)
+    "Call `ispell-word'. Then create an abbrev for the correction made.
+  With prefix P, create local abbrev. Otherwise it will be global."
+    (interactive "P")
+    (let ((before (downcase (or (thing-at-point 'word) "")))
+          after)
+      (call-interactively 'ispell-word)
+      (setq after (downcase (or (thing-at-point 'word) "")))
+      (unless (string= after before)
+        (define-abbrev
+          (if p local-abbrev-table global-abbrev-table) before after))
+        (message "\"%s\" now expands to \"%s\" %sally."
+                 before after (if p "loc" "glob"))))
 
-(define-key ctl-x-map (kbd "C-i") 'ispell-word-then-abbrev)
+  (define-key ctl-x-map (kbd "C-i") 'ispell-word-then-abbrev)
+  (when *is-a-win*
+     (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/"))
 
-(setq save-abbrevs t)
-(setq-default abbrev-mode t)
-(setq ispell-program-name "aspell")
+  (setq save-abbrevs t)
+  (setq-default abbrev-mode t)
+  (setq ispell-program-name "aspell")
 #+END_SRC
 
 ** Youdao Dictionary
@@ -1026,4 +1059,15 @@ With prefix P, create local abbrev. Otherwise it will be global."
 #+BEGIN_SRC emacs-lisp
 (use-package pandoc-mode
   :ensure t)
+#+END_SRC
+** wttr.in
+#+BEGIN_SRC emacs-lisp
+  (use-package wttrin
+    :ensure t
+    :commands (wttrin)
+    :init
+    (setq wttrin-default-cities '("Tsuen Wan"
+                                  "Tin Shui Wai"
+                                  "Hong Kong"))
+    (setq wttrin-default-accept-language '("Accept-Language" . "zh-TW")))
 #+END_SRC

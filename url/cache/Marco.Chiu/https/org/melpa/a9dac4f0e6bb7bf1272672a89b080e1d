@@ -1,0 +1,25 @@
+HTTP/1.1 200 OK
+Server: nginx
+Date: Tue, 13 Mar 2018 09:36:39 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 475
+Last-Modified: Wed, 24 Jan 2018 06:54:49 GMT
+Connection: keep-alive
+Vary: Accept-Encoding
+ETag: "5a682db9-1db"
+Strict-Transport-Security: max-age=15768000
+Accept-Ranges: bytes
+
+Correct the misspelled word with `flyspell' in popup menu.
+
+Usage:
+
+Call `flyspell-popup-correct' to correct misspelled word at point with a
+Popup Menu. You might want to bind it to a key, for example:
+
+  (define-key flyspell-mode-map (kbd "C-;") #'flyspell-popup-correct)
+
+You can also enable `flyspell-popup-auto-correct-mode' to display that Popup
+Menu automatically with a delay (default 1.6 seconds):
+
+  (add-hook 'flyspell-mode-hook #'flyspell-popup-auto-correct-mode)

@@ -1,0 +1,24 @@
+HTTP/1.1 200 OK
+Server: nginx
+Date: Tue, 13 Mar 2018 09:37:08 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 644
+Last-Modified: Wed, 24 Jan 2018 05:50:08 GMT
+Connection: keep-alive
+Vary: Accept-Encoding
+ETag: "5a681e90-284"
+Strict-Transport-Security: max-age=15768000
+Accept-Ranges: bytes
+
+To use, just put your cursor on or after the misspelled word and
+run helm-flyspell-correct. You can of course bind it to a key as
+well by adding this to your `~/.emacs` file:
+(define-key flyspell-mode-map (kbd "C-;") 'helm-flyspell-correct)
+
+When invoked, it will show the list of corrections suggested by
+Flyspell and options to save the word in your personal dictionary
+or accept it in the buffer or the session. If a pattern is typed,
+it will be used to filter the corrections. It can also be directly
+saved to the dictionary, even if it is different from the initial
+word. The new typed word will also replace the word typed in the
+buffer.

@@ -14,6 +14,7 @@
 (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (package-initialize)
 
 ;; Bootstrap `use-package'
@@ -22,11 +23,9 @@
 	(package-install 'use-package))
 
 
+
+
 (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))
-
-
-
-;; (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 
 (custom-set-variables
@@ -44,7 +43,7 @@
  '(epg-gpg-program "/usr/local/bin/gpg")
  '(package-selected-packages
    (quote
-    (yasnippet-snippets yasnippet mu4e-alert pangu-spacing dashboard projectile spaceline markdown-mode pandoc-mode magit moe-theme company company-mode compnay-mode leuven-theme color-theme-sanityinc-tomorrow ibuffer-vc))))
+    (flyspell-correct-ivy dracula-theme yasnippet-snippets yasnippet mu4e-alert pangu-spacing dashboard projectile spaceline markdown-mode pandoc-mode magit moe-theme company company-mode compnay-mode leuven-theme color-theme-sanityinc-tomorrow ibuffer-vc))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

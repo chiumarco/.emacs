@@ -58,6 +58,9 @@
 
 (load-theme 'leuven t)
 
+;; (use-package dracula-theme
+;;   :ensure t)
+
 ;; Ensure that themes will be applied even if they have not been customized
 (defun reapply-themes ()
   "Forcibly load the themes listed in `custom-enabled-themes'."
@@ -79,6 +82,7 @@
   "Activate a dark color theme."
   (interactive)
   (load-theme 'leuven-dark t)
+  ;;(load-theme 'dracula t)
   (reapply-themes)
   )
 
@@ -313,7 +317,27 @@
   :config
   (use-package yasnippet-snippets
     :ensure t)
-  (yas-reload-all))
+  (yas-reload-all)
+  (yas-global-mode 1))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;; Full width comment box                                                 ;;
+ ;; from http://irreal.org/blog/?p=374                                     ;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun bjm-comment-box (b e)
+  "Draw a box comment around the region but arrange for the region to extend to at least the fill column. Place the point after the comment box."
+
+ (interactive "r")
+
+ (let ((e (copy-marker e t)))
+   (goto-char b)
+   (end-of-line)
+   (insert-char ?  (- fill-column (current-column)))
+   (comment-box b e 1)
+   (goto-char e)
+   (set-marker e nil)))
+
+ ;; (global-set-key (kbd "C-c b b") 'bjm-comment-box)
 
 (custom-set-variables
  '(ediff-diff-options "-w")
@@ -503,10 +527,22 @@
   )
 
 (defun eww-render-current-buffer ()
-  "Render HTML in the current buffer with EWW"
+Render HTML in the current buffer with EWW"
+interactive)
+beginning-of-buffer)
+eww-display-html 'utf8 (buffer-name)))
+ND_SRC
+
+ Makes eww more pleasant to use. Run it after eww buffer is loaded.
+EGIN_SRC emacs-lisp
+fun eww-more-readable ()
+Makes eww more pleasant to use. Run it after eww buffer is loaded."
   (interactive)
-  (beginning-of-buffer)
-  (eww-display-html 'utf8 (buffer-name)))
+  (setq eww-header-line-format nil)               ;; removes page title
+  (setq mode-line-format nil)                     ;; removes mode-line
+  (set-window-margins (get-buffer-window) 20 20)  ;; increases size of margins
+  (redraw-display)                                ;; apply mode-line changes
+  (eww-reload 'local))                            ;; apply eww-header changes
 
 ;(setq org-ellipsis " ")
 (setq org-src-fontify-natively t)
@@ -606,6 +642,36 @@
            (insert-image (create-image data nil t)))
       (kill-buffer buffer))))
 
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (calc . t)
+   (sh . t)
+   (python . t)
+   (R . t)
+   ))
+
+(when *is-a-mac*
+  (add-to-list 'org-latex-classes
+               '("bjmarticle"
+                 "\\documentclass{article}
+                  \\usepackage[utf8]{inputenc}
+                  \\usepackage[T1]{fontenc}
+                  \\usepackage{graphicx}
+                  \\usepackage{longtable}
+                  \\usepackage{hyperref}
+                  \\usepackage{natbib}
+                  \\usepackage{amssymb}
+                  \\usepackage{amsmath}
+                  \\usepackage{geometry}
+                  \\geometry{a4paper,left=2.5cm,top=2cm,right=2.5cm,bottom=2cm,marginparsep=7pt, marginparwidth=.6in}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  )
+
 (defun ispell-word-then-abbrev (p)
   "Call `ispell-word'. Then create an abbrev for the correction made.
 With prefix P, create local abbrev. Otherwise it will be global."
@@ -621,6 +687,8 @@ With prefix P, create local abbrev. Otherwise it will be global."
                before after (if p "loc" "glob"))))
 
 (define-key ctl-x-map (kbd "C-i") 'ispell-word-then-abbrev)
+(when *is-a-win*
+   (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/"))
 
 (setq save-abbrevs t)
 (setq-default abbrev-mode t)
@@ -636,3 +704,12 @@ With prefix P, create local abbrev. Otherwise it will be global."
 
 (use-package pandoc-mode
   :ensure t)
+
+(use-package wttrin
+  :ensure t
+  :commands (wttrin)
+  :init
+  (setq wttrin-default-cities '("Tsuen Wan"
+                                "Tin Shui Wai"
+                                "Hong Kong"))
+  (setq wttrin-default-accept-language '("Accept-Language" . "zh-TW")))
