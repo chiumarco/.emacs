@@ -1,5 +1,5 @@
-;; Warn when opening files bigger than 100MB
-(setq large-file-warning-threshold (* 100 1024 1024))
+;; Warn when opening files bigger than 500MB
+(setq large-file-warning-threshold (* 500 1024 1024))
 
 ;; Reduce the frequency of garbage collection by making it happen on
 ;; each 100MB of allocated data (the default is on every 0.76MB)
@@ -22,11 +22,10 @@
 	(package-refresh-contents)
 	(package-install 'use-package))
 
-
-
-
 (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))
 
+;; Garbage collector - decrease threshold to 100 MB
+(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 100 1024 1024))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

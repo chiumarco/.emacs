@@ -23,6 +23,14 @@ If you like using any of those, change =-1= to =1=.
 ;;(scroll-bar-mode 1)
 #+END_SRC
 
+*** Set the cursor shape
+#+BEGIN_SRC emacs-lisp :tangle no
+  ;; Bar cursor
+  (setq-default cursor-type '(bar . 1))
+  ;; Don't blink the cursor
+  (blink-cursor-mode -1)
+#+END_SRC
+
 *** Disable bell
 #+BEGIN_SRC emacs-lisp
 (setq ring-bell-function 'ignore)
@@ -632,8 +640,26 @@ npm install -g vmd
 ** Matlab
 
 #+BEGIN_SRC emacs-lisp
-(use-package matlab-mode
-  :ensure t)
+  (use-package matlab-mode
+    :ensure t
+    :mode ("\\.m$" . matlab-mode)
+    :bind (:map matlab-shell-mode-map
+                ("C-c C-c" . term-interrupt-subjob))
+    :init
+    (setq matlab-shell-command "/Applications/MATLAB_R2017a.app/bin/matlab"
+          matlab-indent-function t)
+    (eval-after-load 'matlab
+      '(add-to-list 'matlab-shell-command-switches "-nosplash")))
+#+END_SRC
+
+Function to open a MATLAB command line in a vertical split.
+#+BEGIN_SRC emacs-lisp
+  (defun mc/matlab-shell-here ()
+    "opens up a new matlab shell in the directory associated with the current buffer's file."
+    (interactive)
+    (split-window-right)
+    (other-window 1)
+    (matlab-shell))
 #+END_SRC
 
 
@@ -1015,6 +1041,7 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
 
 ** ispell
 
+
 #+BEGIN_SRC emacs-lisp
   (defun ispell-word-then-abbrev (p)
     "Call `ispell-word'. Then create an abbrev for the correction made.
@@ -1034,6 +1061,7 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
   (when *is-a-win*
      (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/"))
 
+  (setq ispell-personal-dictionary "~/.emacs.d/dictionary/")
   (setq save-abbrevs t)
   (setq-default abbrev-mode t)
   (setq ispell-program-name "aspell")
