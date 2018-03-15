@@ -359,7 +359,22 @@
 (require 'vmd-mode)
 
 (use-package matlab-mode
-  :ensure t)
+  :ensure t
+  :mode ("\\.m$" . matlab-mode)
+  :bind (:map matlab-shell-mode-map
+              ("C-c C-c" . term-interrupt-subjob))
+  :init
+  (setq matlab-shell-command "/Applications/MATLAB_R2017a.app/bin/matlab"
+        matlab-indent-function t)
+  (eval-after-load 'matlab
+    '(add-to-list 'matlab-shell-command-switches "-nosplash")))
+
+(defun mc/matlab-shell-here ()
+  "opens up a new matlab shell in the directory associated with the current buffer's file."
+  (interactive)
+  (split-window-right)
+  (other-window 1)
+  (matlab-shell))
 
 (use-package magit
   :ensure t
@@ -690,6 +705,7 @@ With prefix P, create local abbrev. Otherwise it will be global."
 (when *is-a-win*
    (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/"))
 
+(setq ispell-personal-dictionary "~/.emacs.d/dictionary/")
 (setq save-abbrevs t)
 (setq-default abbrev-mode t)
 (setq ispell-program-name "aspell")

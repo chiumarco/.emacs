@@ -1001,6 +1001,13 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
 #+END_SRC
 
 ** Babel
+ We can tell babel to ignore a code by giving the option =:tangle no= to the source code. The following is an example. You can view the actual code by opening this file in Emacs.
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(message "I don't exist!")
+#+END_SRC
+
+
 #+BEGIN_SRC emacs-lisp
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -1013,7 +1020,7 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
 #+END_SRC
 
 ** LaTex
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (when *is-a-mac*
     (add-to-list 'org-latex-classes
                  '("bjmarticle"
@@ -1035,7 +1042,6 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
     )
 #+END_SRC
-
 
 * Useful tools
 

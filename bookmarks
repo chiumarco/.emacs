@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Dropbox"
+(("Org-note"
+ (filename . "c:/Users/Marco.Chiu/OneDrive/Documents/OrgMode/")
+ (front-context-string . "How to Change a ")
+ (rear-context-string . "767 03-11 09:10 ")
+ (position . 283))
+("Dropbox"
  (filename . "c:/Users/Marco.Chiu/Dropbox/")
  (front-context-string . "Apps\n  -rw-rw-rw")
  (rear-context-string . "  0 11-16 16:39 ")
@@ -23,7 +28,7 @@
  (rear-context-string . "2017-12-04 Mon>\n")
  (position . 160))
 ("Markdown"
- (filename . "~/Documents/OneDrive/�ļ�/Markdown/")
+ (filename . "~/Documents/OneDrive/ÎÄ¼þ/Markdown/")
  (front-context-string . "Emacs\n  drwxr-xr")
  (rear-context-string . "38 Sep 20 00:34 ")
  (position . 453))
