@@ -1,10 +1,10 @@
 HTTP/1.1 200 OK
-Date: Tue, 13 Mar 2018 09:35:51 GMT
+Date: Thu, 15 Mar 2018 00:26:58 GMT
 Server: Apache/2.4.25 (Debian)
-Last-Modified: Tue, 13 Mar 2018 09:04:53 GMT
-ETag: "8dfa-567478d3fa5b2"
+Last-Modified: Wed, 14 Mar 2018 21:04:57 GMT
+ETag: "8dfc-56765ba448b9b"
 Accept-Ranges: bytes
-Content-Length: 36346
+Content-Length: 36348
 Keep-Alive: timeout=5, max=100
 Connection: Keep-Alive
 
@@ -385,7 +385,7 @@ Connection: Keep-Alive
 	     ((:url . "http://elpa.gnu.org/packages/ediprolog.html")
 	      (:keywords "languages" "processes"))])
  (el-search .
-	    [(1 6)
+	    [(1 6 1)
 	     ((emacs
 	       (25))
 	      (stream
@@ -440,9 +440,9 @@ Connection: Keep-Alive
 	       ((:keywords "calendar")
 		(:url . "http://elpa.gnu.org/packages/excorporate.html"))])
  (exwm .
-       [(0 17)
+       [(0 18)
 	((xelb
-	  (0 13)))
+	  (0 14)))
 	"Emacs X Window Manager" tar
 	((:keywords "unix")
 	 (:url . "https://github.com/ch11ng/exwm"))])
@@ -1209,7 +1209,7 @@ Connection: Keep-Alive
 	 ((:url . "http://elpa.gnu.org/packages/xclip.html")
 	  (:keywords "convenience" "tools"))])
  (xelb .
-       [(0 13)
+       [(0 14)
 	((emacs
 	  (24 4))
 	 (cl-generic

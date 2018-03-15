@@ -588,7 +588,7 @@ YASnippet is a template system for Emacs. It allows you to type an abbreviation 
    ;; Full width comment box                                                 ;;
    ;; from http://irreal.org/blog/?p=374                                     ;;
    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (defun bjm-comment-box (b e)
+  (defun mc-comment-box (b e)
     "Draw a box comment around the region but arrange for the region to extend to at least the fill column. Place the point after the comment box."
 
    (interactive "r")
@@ -601,7 +601,7 @@ YASnippet is a template system for Emacs. It allows you to type an abbreviation 
      (goto-char e)
      (set-marker e nil)))
 
-   ;; (global-set-key (kbd "C-c b b") 'bjm-comment-box)
+  ;; (global-set-key (kbd "C-c b b") 'bjm-comment-box)
 #+END_SRC
 ** ediff
 #+BEGIN_SRC emacs-lisp
