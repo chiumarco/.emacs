@@ -605,10 +605,20 @@ YASnippet is a template system for Emacs. It allows you to type an abbreviation 
 #+END_SRC
 ** ediff
 #+BEGIN_SRC emacs-lisp
-(custom-set-variables
- '(ediff-diff-options "-w")
- '(ediff-split-window-function (quote split-window-horizontally))
- '(ediff-window-setup-function (quote ediff-setup-windows-plain)))
+  (custom-set-variables
+   '(ediff-diff-options "-w")
+   '(ediff-split-window-function (quote split-window-horizontally))
+   '(ediff-window-setup-function (quote ediff-setup-windows-plain)))
+  (winner-mode)
+  (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
+
+  ;; (when *is-a-win*
+  ;;   (progn
+  ;;     (setq diff-path "C:/Program Files (x86)/GnuWin32/bin/")
+  ;;     (setenv "PATH"
+  ;;             (concat diff-path ";"))
+  ;;     (setq exec-path
+  ;;           '(diff-path))))
 #+END_SRC
 
 ** Markdown

@@ -324,7 +324,7 @@
  ;; Full width comment box                                                 ;;
  ;; from http://irreal.org/blog/?p=374                                     ;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun bjm-comment-box (b e)
+(defun mc-comment-box (b e)
   "Draw a box comment around the region but arrange for the region to extend to at least the fill column. Place the point after the comment box."
 
  (interactive "r")
@@ -337,12 +337,22 @@
    (goto-char e)
    (set-marker e nil)))
 
- ;; (global-set-key (kbd "C-c b b") 'bjm-comment-box)
+;; (global-set-key (kbd "C-c b b") 'bjm-comment-box)
 
 (custom-set-variables
  '(ediff-diff-options "-w")
  '(ediff-split-window-function (quote split-window-horizontally))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain)))
+(winner-mode)
+(add-hook 'ediff-after-quit-hook-internal 'winner-undo)
+
+;; (when *is-a-win*
+;;   (progn
+;;     (setq diff-path "C:/Program Files (x86)/GnuWin32/bin/")
+;;     (setenv "PATH"
+;;             (concat diff-path ";"))
+;;     (setq exec-path
+;;           '(diff-path))))
 
 (use-package markdown-mode
   :ensure t
@@ -665,27 +675,6 @@ Makes eww more pleasant to use. Run it after eww buffer is loaded."
    (python . t)
    (R . t)
    ))
-
-(when *is-a-mac*
-  (add-to-list 'org-latex-classes
-               '("bjmarticle"
-                 "\\documentclass{article}
-                  \\usepackage[utf8]{inputenc}
-                  \\usepackage[T1]{fontenc}
-                  \\usepackage{graphicx}
-                  \\usepackage{longtable}
-                  \\usepackage{hyperref}
-                  \\usepackage{natbib}
-                  \\usepackage{amssymb}
-                  \\usepackage{amsmath}
-                  \\usepackage{geometry}
-                  \\geometry{a4paper,left=2.5cm,top=2cm,right=2.5cm,bottom=2cm,marginparsep=7pt, marginparwidth=.6in}"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-  )
 
 (defun ispell-word-then-abbrev (p)
   "Call `ispell-word'. Then create an abbrev for the correction made.
