@@ -23,10 +23,10 @@
  (rear-context-string . "e and eyebrowse\n")
  (position . 2012))
 ("org-capture-last-stored"
- (filename . "c:/Users/Marco.Chiu/Dropbox/Emacs/Org/work.org")
- (front-context-string . "** TODO Claim ST")
- (rear-context-string . "2017-12-04 Mon>\n")
- (position . 160))
+ (filename . "~/Dropbox/Emacs/Org/personal.org")
+ (front-context-string . "** TODO Cancel S")
+ (rear-context-string . "2018-04-02 Mon>\n")
+ (position . 2162))
 ("Markdown"
  (filename . "~/Documents/OneDrive/ÎÄ¼þ/Markdown/")
  (front-context-string . "Emacs\n  drwxr-xr")

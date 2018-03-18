@@ -22,6 +22,28 @@
 	(package-refresh-contents)
 	(package-install 'use-package))
 
+;; ;; Make sure Org is installed
+;; (unless (package-installed-p 'org)
+;;   (package-refresh-contents)
+;;   (package-install 'org))
+
+;; (use-package org
+;;   :ensure t
+;;   :init
+;;   ;; stuff you want done before org loaded
+;;   :config
+;;   ;; stuff  you want doen after org loaded
+;;   )
+
+(use-package org
+  :ensure org-plus-contrib
+  :init
+  ;; stuff you want done before org loaded
+  :config
+  ;; stuff you want doen after org loaded
+  )
+
+
 (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))
 
 ;; Garbage collector - decrease threshold to 100 MB
@@ -42,7 +64,7 @@
  '(epg-gpg-program "/usr/local/bin/gpg")
  '(package-selected-packages
    (quote
-    (flyspell-correct-ivy dracula-theme yasnippet-snippets yasnippet mu4e-alert pangu-spacing dashboard projectile spaceline markdown-mode pandoc-mode magit moe-theme company company-mode compnay-mode leuven-theme color-theme-sanityinc-tomorrow ibuffer-vc))))
+    (org-plus-contrib atomic-chrome flyspell-correct-ivy dracula-theme yasnippet-snippets yasnippet mu4e-alert pangu-spacing dashboard projectile spaceline markdown-mode pandoc-mode magit moe-theme company company-mode compnay-mode leuven-theme color-theme-sanityinc-tomorrow ibuffer-vc))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -327,11 +327,12 @@ Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
 Swiper, an Ivy-enhanced alternative to isearch.
 
 #+BEGIN_SRC emacs-lisp
-(use-package swiper
-  :ensure t
-  :config
-  (ivy-mode 1)
+  (use-package swiper
+    :ensure t
+    :config
+    (ivy-mode 1)
     (setq ivy-use-virtual-buffers t)
+    (setq ivy-display-style 'fancy)
     (global-set-key "\C-s" 'swiper)
     (global-set-key (kbd "C-c C-r") 'ivy-resume)
     (global-set-key (kbd "<f6>") 'ivy-resume)
@@ -347,8 +348,7 @@ Swiper, an Ivy-enhanced alternative to isearch.
     (global-set-key (kbd "C-c k") 'counsel-ag)
     (global-set-key (kbd "C-x l") 'counsel-locate)
     (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-    )
+    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history))
 #+END_SRC
 
 ** scrolling and why does the screen move
@@ -879,6 +879,15 @@ Makes eww more pleasant to use. Run it after eww buffer is loaded."
   (eww-reload 'local))                            ;; apply eww-header changes
 #+END_SRC
 
+** Atomic-chrome
+#+BEGIN_SRC emacs-lisp
+  (use-package atomic-chrome
+    :ensure t
+    :config
+    (atomic-chrome-start-server)
+    (setq atomic-chrome-default-major-mode 'org-mode)
+    (setq atomic-chrome-buffer-open-style 'frame))
+#+END_SRC
 
 * Org
 
@@ -891,6 +900,9 @@ Makes eww more pleasant to use. Run it after eww buffer is loaded."
   (setq org-confirm-babel-evaluate nil)
   (setq org-export-with-smart-quotes t)
   (setq org-src-window-setup 'current-window)
+  ;; org ellipsis options, other than the default Go to Node...
+  ;; not supported in common font, but supported in Symbola (my fall-back font) ⬎, ⤷, ⤵
+  (setq org-ellipsis "⚡⚡⚡");; ⤵ ≫
 #+END_SRC
 
 ** Line wrapping
@@ -914,7 +926,9 @@ Makes it all look a bit nicer, I hate looking at asterisks.
   (use-package org-bullets
     :ensure t
     :config
-      (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode)))
+    (setq org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥"))
+    )
 #+END_SRC
 
 ** Easy-to-add emacs-lisp template
@@ -1025,7 +1039,7 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
      (calc . t)
      (sh . t)
      (python . t)
-     (R . t)
+     ;(R . t)
      ))
 #+END_SRC
 
@@ -1052,6 +1066,7 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
     )
 #+END_SRC
+
 
 * Useful tools
 

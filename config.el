@@ -1,4 +1,3 @@
-
 (defconst *is-a-mac* (eq system-type 'darwin))
 (defconst *is-a-win* (eq system-type 'windows-nt))
 
@@ -182,24 +181,24 @@
   :ensure t
   :config
   (ivy-mode 1)
-    (setq ivy-use-virtual-buffers t)
-    (global-set-key "\C-s" 'swiper)
-    (global-set-key (kbd "C-c C-r") 'ivy-resume)
-    (global-set-key (kbd "<f6>") 'ivy-resume)
-    (global-set-key (kbd "M-x") 'counsel-M-x)
-    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-    (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-    (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-    (global-set-key (kbd "<f1> l") 'counsel-load-library)
-    (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-    (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-    (global-set-key (kbd "C-c g") 'counsel-git)
-    (global-set-key (kbd "C-c j") 'counsel-git-grep)
-    (global-set-key (kbd "C-c k") 'counsel-ag)
-    (global-set-key (kbd "C-x l") 'counsel-locate)
-    (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-    )
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-display-style 'fancy)
+  (global-set-key "\C-s" 'swiper)
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  (global-set-key (kbd "<f6>") 'ivy-resume)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  (global-set-key (kbd "<f1> l") 'counsel-load-library)
+  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-c k") 'counsel-ag)
+  (global-set-key (kbd "C-x l") 'counsel-locate)
+  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+  (define-key read-expression-map (kbd "C-r") 'counsel-expression-history))
 
 (setq scroll-conservatively 100)
 
@@ -569,12 +568,22 @@ Makes eww more pleasant to use. Run it after eww buffer is loaded."
   (redraw-display)                                ;; apply mode-line changes
   (eww-reload 'local))                            ;; apply eww-header changes
 
+(use-package atomic-chrome
+  :ensure t
+  :config
+  (atomic-chrome-start-server)
+  (setq atomic-chrome-default-major-mode 'org-mode)
+  (setq atomic-chrome-buffer-open-style 'frame))
+
 ;(setq org-ellipsis " ")
 (setq org-src-fontify-natively t)
 (setq org-src-tab-acts-natively t)
 (setq org-confirm-babel-evaluate nil)
 (setq org-export-with-smart-quotes t)
 (setq org-src-window-setup 'current-window)
+;; org ellipsis options, other than the default Go to Node...
+;; not supported in common font, but supported in Symbola (my fall-back font) ⬎, ⤷, ⤵
+(setq org-ellipsis "⚡⚡⚡");; ⤵ ≫
 
 (add-hook 'org-mode-hook
           '(lambda ()
@@ -587,10 +596,12 @@ Makes eww more pleasant to use. Run it after eww buffer is loaded."
 (use-package org-bullets
   :ensure t
   :config
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode)))
+  (setq org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥"))
+  )
 
 (add-to-list 'org-structure-template-alist
-             '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+	     '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
 
 ;; Insert timestamp when TODO state changed into DONE state
 (setq org-log-done 'time)
@@ -673,7 +684,7 @@ Makes eww more pleasant to use. Run it after eww buffer is loaded."
    (calc . t)
    (sh . t)
    (python . t)
-   (R . t)
+   ;(R . t)
    ))
 
 (defun ispell-word-then-abbrev (p)
