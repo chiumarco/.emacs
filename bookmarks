@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Org-note"
+(("Mac-OrgMode"
+ (filename . "~/Documents/OneDrive/Documents/OrgMode/")
+ (front-context-string . ".DS_Store\n  -rw-")
+ (rear-context-string . "48 Mar 17 15:39 ")
+ (position . 263))
+("Org-note"
  (filename . "c:/Users/Marco.Chiu/OneDrive/Documents/OrgMode/")
  (front-context-string . "How to Change a ")
  (rear-context-string . "767 03-11 09:10 ")
@@ -17,24 +22,4 @@
  (front-context-string . ".849C9593-D756-4")
  (rear-context-string . "  0 02-21 11:13 ")
  (position . 261))
-("org-refile-last-stored"
- (filename . "~/Dropbox/Emacs/Org/personal.org")
- (front-context-string . "** TODO sleeping")
- (rear-context-string . "e and eyebrowse\n")
- (position . 2012))
-("org-capture-last-stored"
- (filename . "~/Dropbox/Emacs/Org/personal.org")
- (front-context-string . "** TODO Cancel S")
- (rear-context-string . "2018-04-02 Mon>\n")
- (position . 2162))
-("Markdown"
- (filename . "~/Documents/OneDrive/ÎÄ¼þ/Markdown/")
- (front-context-string . "Emacs\n  drwxr-xr")
- (rear-context-string . "38 Sep 20 00:34 ")
- (position . 453))
-("Downloads"
- (filename . "~/Downloads/")
- (front-context-string . "$RECYCLE.BIN\n  d")
- (rear-context-string . "02 Sep 12 00:39 ")
- (position . 201))
 )

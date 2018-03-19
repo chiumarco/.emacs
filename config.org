@@ -1039,7 +1039,7 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
    'org-babel-load-languages
    '(
      (calc . t)
-     (sh . t)
+     (shell . t)
      (python . t)
      ;(R . t)
      ))
