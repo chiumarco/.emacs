@@ -583,7 +583,7 @@ Makes eww more pleasant to use. Run it after eww buffer is loaded."
 (setq org-src-window-setup 'current-window)
 ;; org ellipsis options, other than the default Go to Node...
 ;; not supported in common font, but supported in Symbola (my fall-back font) ⬎, ⤷, ⤵
-(setq org-ellipsis "⚡⚡⚡");; ⤵ ≫
+(setq org-ellipsis "⤵⤵⤵");; ⤵ ≫
 
 (add-hook 'org-mode-hook
           '(lambda ()
@@ -597,7 +597,8 @@ Makes eww more pleasant to use. Run it after eww buffer is loaded."
   :ensure t
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode)))
-  (setq org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥"))
+  (when *is-a-mac*
+    (setq org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥")))
   )
 
 (add-to-list 'org-structure-template-alist

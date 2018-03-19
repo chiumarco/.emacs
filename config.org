@@ -889,6 +889,7 @@ Makes eww more pleasant to use. Run it after eww buffer is loaded."
     (setq atomic-chrome-buffer-open-style 'frame))
 #+END_SRC
 
+
 * Org
 
 ** Common settings
@@ -902,7 +903,7 @@ Makes eww more pleasant to use. Run it after eww buffer is loaded."
   (setq org-src-window-setup 'current-window)
   ;; org ellipsis options, other than the default Go to Node...
   ;; not supported in common font, but supported in Symbola (my fall-back font) ⬎, ⤷, ⤵
-  (setq org-ellipsis "⚡⚡⚡");; ⤵ ≫
+  (setq org-ellipsis "⤵⤵⤵");; ⤵ ≫
 #+END_SRC
 
 ** Line wrapping
@@ -927,7 +928,8 @@ Makes it all look a bit nicer, I hate looking at asterisks.
     :ensure t
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode)))
-    (setq org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥"))
+    (when *is-a-mac*
+      (setq org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥")))
     )
 #+END_SRC
 
