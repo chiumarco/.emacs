@@ -98,7 +98,16 @@ Make Cursor the width of the character it is nder full width of a TAB
         (setq line-spacing nil)
       (setq line-spacing 0.5))
     (redraw-frame (selected-frame)))
+
+  (defun default-org-line-spacing ()
+    "set default org mode line spacing"
+;;    (interactive)
+    (setq line-spacing 0.5)
+    )
+
+  (add-hook 'org-mode-hook 'default-org-line-spacing)
 #+END_SRC
+
 ** Functionality
 
 *** Disable backups and auto-saves
@@ -948,7 +957,8 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
   ;; Uses only one star and indents text to line with the heading:
   (setq org-startup-indented t)
   ;; Only one occurrence is shown, either today or the nearest into the future
-  (setq org-agenda-repeating-timestamp-show-all nil)
+  ;; (setq org-agenda-repeating-timestamp-show-all nil)
+  (setq org-agenda-show-future-repeats nil)
   ;; Open agenda in current window
   (setq org-agenda-window-setup (quote current-window))
   ;; Warn me of any deadlines in next 7 days

@@ -38,12 +38,20 @@
 (add-hook 'prog-mode-hook 'linum-mode)
 
 (defun toggle-line-spacing ()
-  "Toggle line spacing between no extra space to extra half line height."
-  (interactive)
-  (if line-spacing
-      (setq line-spacing nil)
-    (setq line-spacing 0.5))
-  (redraw-frame (selected-frame)))
+    "Toggle line spacing between no extra space to extra half line height."
+    (interactive)
+    (if line-spacing
+        (setq line-spacing nil)
+      (setq line-spacing 0.5))
+    (redraw-frame (selected-frame)))
+
+  (defun default-org-line-spacing ()
+    "set default org mode line spacing"
+;;    (interactive)
+    (setq line-spacing 0.5)
+    )
+
+  (add-hook 'org-mode-hook 'default-org-line-spacing)
 
 (setq make-backup-files nil)
 (setq auto-save-default nil)
