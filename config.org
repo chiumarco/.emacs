@@ -1,4 +1,3 @@
-
 * Basic Interface Settings
 These are setting that do not depend on packages and are built-in enhancements to the UI.
 
@@ -12,7 +11,12 @@ These are setting that do not depend on packages and are built-in enhancements t
 *** Remove lame startup screen
 We use an actual replacement for it, keep reading or head directly to =dashboard=.
 #+BEGIN_SRC emacs-lisp
-(setq inhibit-startup-message nil)
+(setq inhibit-startup-message t)
+#+END_SRC
+
+*** Empty scratch buffer
+#+BEGIN_SRC emacs-lisp
+(setq initial-scratch-message "")
 #+END_SRC
 
 *** Disable menus and scrollbars
@@ -109,7 +113,6 @@ Make Cursor the width of the character it is nder full width of a TAB
 #+END_SRC
 
 ** Functionality
-
 *** Disable backups and auto-saves
 I don't use either, you might want to turn those from =nil= to =t= if you do.
 #+BEGIN_SRC emacs-lisp
@@ -130,6 +133,16 @@ I don't use either, you might want to turn those from =nil= to =t= if you do.
 #+BEGIN_SRC emacs-lisp
 (setq user-full-name "Marco Chiu")
 (setq user-mail-address "chiumarco@gmail.com")
+#+END_SRC
+
+** Keybinding for open config.org
+#+BEGIN_SRC emacs-lisp
+  (defun find-config ()
+    "Edit config.org"
+    (interactive)
+    (find-file "~/.emacs.d/config.org"))
+
+  (global-set-key (kbd "C-c s") 'find-config)
 #+END_SRC
 
 
@@ -1158,4 +1171,12 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
        '(pdf-tools-handle-upgrades nil)) ; Use brew upgrade pdf-tools instead.
       (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo"))
     (pdf-tools-install))
+#+END_SRC
+** Google-this
+Search selected region in google.
+#+BEGIN_SRC emacs-lisp
+  (use-package google-this
+    :ensure t
+    :config
+    (google-this-mode 1))
 #+END_SRC

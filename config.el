@@ -1,7 +1,9 @@
 (defconst *is-a-mac* (eq system-type 'darwin))
 (defconst *is-a-win* (eq system-type 'windows-nt))
 
-(setq inhibit-startup-message nil)
+(setq inhibit-startup-message t)
+
+(setq initial-scratch-message "")
 
 (tool-bar-mode -1)
 ;;(menu-bar-mode 1)
@@ -62,6 +64,13 @@
 
 (setq user-full-name "Marco Chiu")
 (setq user-mail-address "chiumarco@gmail.com")
+
+(defun find-config ()
+  "Edit config.org"
+  (interactive)
+  (find-file "~/.emacs.d/config.org"))
+
+(global-set-key (kbd "C-c s") 'find-config)
 
 (load-theme 'leuven t)
 
@@ -617,7 +626,8 @@ Makes eww more pleasant to use. Run it after eww buffer is loaded."
 ;; Uses only one star and indents text to line with the heading:
 (setq org-startup-indented t)
 ;; Only one occurrence is shown, either today or the nearest into the future
-(setq org-agenda-repeating-timestamp-show-all nil)
+;; (setq org-agenda-repeating-timestamp-show-all nil)
+(setq org-agenda-show-future-repeats nil)
 ;; Open agenda in current window
 (setq org-agenda-window-setup (quote current-window))
 ;; Warn me of any deadlines in next 7 days
