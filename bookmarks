@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Mac-OrgMode"
+(("org-capture-last-stored"
+ (filename . "c:/Users/Marco.Chiu/Dropbox/Emacs/Org/work.org")
+ (front-context-string . "** TODO Compare ")
+ (rear-context-string . "eral connection\n")
+ (position . 548))
+("Mac-OrgMode"
  (filename . "~/Documents/OneDrive/Documents/OrgMode/")
  (front-context-string . ".DS_Store\n  -rw-")
  (rear-context-string . "48 Mar 17 15:39 ")
