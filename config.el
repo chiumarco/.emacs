@@ -6,8 +6,8 @@
 (setq initial-scratch-message "")
 
 (tool-bar-mode -1)
-;;(menu-bar-mode 1)
-;;(scroll-bar-mode 1)
+(menu-bar-mode 1)
+(scroll-bar-mode -1)
 
 (setq ring-bell-function 'ignore)
 
@@ -833,4 +833,4 @@ With prefix P, create local abbrev. Otherwise it will be global."
              ("o" . sx-open-link)
              ("u" . sx-tab-unanswered-my-tags)
              ("a" . sx-ask)
-             ("s" . sx-search))
+             ("s" . sx-search)))

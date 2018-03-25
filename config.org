@@ -23,8 +23,8 @@ We use an actual replacement for it, keep reading or head directly to =dashboard
 If you like using any of those, change =-1= to =1=.
 #+BEGIN_SRC emacs-lisp
 (tool-bar-mode -1)
-;;(menu-bar-mode 1)
-;;(scroll-bar-mode 1)
+(menu-bar-mode 1)
+(scroll-bar-mode -1)
 #+END_SRC
 
 *** Set the cursor shape
@@ -1249,5 +1249,5 @@ SX is a full stack overflow client within Emacs.
                ("o" . sx-open-link)
                ("u" . sx-tab-unanswered-my-tags)
                ("a" . sx-ask)
-               ("s" . sx-search))
+               ("s" . sx-search)))
 #+END_SRC
