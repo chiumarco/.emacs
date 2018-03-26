@@ -148,7 +148,6 @@ I don't use either, you might want to turn those from =nil= to =t= if you do.
   (global-set-key (kbd "C-c e") 'find-config)
 #+END_SRC
 
-
 * Themes
 
 ** Leuven
@@ -157,22 +156,6 @@ Default theme.
 (load-theme 'leuven t)
 #+END_SRC
 
-** dracula-theme
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package dracula-theme
-  ;;   :ensure t)
-#+END_SRC
-
-** monokai-theme
-#+BEGIN_SRC emacs-lisp
-  (use-package monokai-theme
-    :ensure t)
-#+END_SRC
-** tangotango-theme
-#+BEGIN_SRC emacs-lisp
-  (use-package tangotango-theme
-    :ensure t)
-#+END_SRC
 ** Function to toggle between light and dark
 
 #+BEGIN_SRC emacs-lisp
@@ -197,12 +180,9 @@ Default theme.
       "Activate a dark color theme."
       (interactive)
       (load-theme 'leuven-dark t)
-      ;;(load-theme 'tangotango t)
-      ;;(load-theme 'monokai t)
       (reapply-themes)
       )
 #+END_SRC
-
 
 * Modeline
 ** Spaceline
@@ -254,7 +234,6 @@ them running, it just prevents them from showing up and taking up space.
       )
 #+END_SRC
 
-
 * Projectile
 Projectile is an awesome project manager, mostly because it recognizes directories
 with a =.git= directory as projects and helps you manage them accordingly.
@@ -267,7 +246,6 @@ This makes sure that everything can be a project.
     :init
       (projectile-mode 1))
 #+END_SRC
-
 
 * Dashboard
 This is your new startup screen, together with projectile it works in unison and
@@ -288,7 +266,6 @@ change the numbers to suit your liking, I find 5 to be enough.
   ;;                             (agenda   . 5)))
   ;;     (add-to-list 'dashboard-items '(agenda) t))
 #+END_SRC
-
 
 * File manager
 
@@ -333,7 +310,6 @@ To show icon in treemacs in Windows, need install dependencies as well (=emacs-2
                     ([f9] . treemacs-projectile)
                     ([f9] . treemacs-projectile-toggle)))
 #+END_SRC
-
 
 * Moving around emacs
 
@@ -506,7 +482,6 @@ This can be invoked using =C-M-s-k=. This keybinding makes sure you don't hit it
 #+END_SRC
 
 
-
 * Minor conveniences
 
 ** Beacon
@@ -539,7 +514,6 @@ Instead of GUI x-popup-menu, I prefer a small minibuffer, it's easier to select 
       (ace-popup-menu-mode 1))
 #+END_SRC
 
-
 * Kill ring
 
 ** popup-kill-ring
@@ -551,7 +525,6 @@ C-n and C-p totally work for this.
     :ensure t
     :bind ("M-y" . popup-kill-ring))
 #+END_SRC
-
 
 * Completion
 Be it for code or prose, completion is a must.
@@ -613,7 +586,11 @@ YASnippet is a template system for Emacs. It allows you to type an abbreviation 
     (yas-reload-all)
     (yas-global-mode 1))
 #+END_SRC
-
+** Auto-YASnippet
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-yasnippet
+    :ensure t)
+#+END_SRC
 
 * Programming
 
@@ -657,6 +634,14 @@ YASnippet is a template system for Emacs. It allows you to type an abbreviation 
   ;;           '(diff-path))))
 #+END_SRC
 
+** Aggressive-indent-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package aggressive-indent
+    :ensure t
+    :config
+    (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+    (add-hook 'python-mode-hook #'aggressive-indent-mode))
+#+END_SRC
 ** Markdown
 
 #+BEGIN_SRC emacs-lisp
@@ -708,6 +693,22 @@ Function to open a MATLAB command line in a vertical split.
     (matlab-shell))
 #+END_SRC
 
+** Python
+Improve python mode indent.
+#+BEGIN_SRC emacs-lisp
+  ;; (defun python-return()
+  ;;   (interactive)
+  ;;   (if (= (point) (point-at-bol))
+  ;;       (insert "\n")
+  ;;     (newline)
+  ;;     (indent-for-tab-command)))
+
+  ;; (defun vmacs-python-mode-hook ()
+  ;;   ;; (when (fboundp 'jedi:setup) (jedi:setup))
+  ;;   (define-key python-mode-map  (kbd "RET") 'python-return))
+
+  ;; (add-hook 'python-mode-hook 'vmacs-python-mode-hook)
+#+END_SRC
 
 * Git integration
 
@@ -718,7 +719,6 @@ Function to open a MATLAB command line in a vertical split.
     (setq magit-push-always-verify nil)
     (setq git-commit-summary-max-length 50))
 #+END_SRC
-
 
 * Mu4e
 
@@ -890,8 +890,6 @@ This extension adds a maildir summary in =mu4e-main-view=.
       )
     )
 #+END_SRC
-
-
 * Web
 ** EWW
 
@@ -924,7 +922,6 @@ Makes eww more pleasant to use. Run it after eww buffer is loaded."
     (setq atomic-chrome-default-major-mode 'org-mode)
     (setq atomic-chrome-buffer-open-style 'frame))
 #+END_SRC
-
 
 * Org
 
@@ -1221,7 +1218,6 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
         (error "I am not equipped for dnd on %s" payload)))))
 #+END_SRC
 * Useful tools
-
 ** ispell
 
 
@@ -1299,6 +1295,12 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
       (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo"))
     (pdf-tools-install))
 #+END_SRC
+** Org-pdfview
+org-link support for pdf-view-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package org-pdfview
+    :ensure t)
+#+END_SRC
 ** Google-this
 Search selected region in google.
 #+BEGIN_SRC emacs-lisp
@@ -1324,3 +1326,4 @@ SX is a full stack overflow client within Emacs.
                ("s" . sx-search)))
 #+END_SRC
 
+* Personal Keymap
