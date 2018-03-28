@@ -696,18 +696,18 @@ Function to open a MATLAB command line in a vertical split.
 ** Python
 Improve python mode indent.
 #+BEGIN_SRC emacs-lisp
-  ;; (defun python-return()
-  ;;   (interactive)
-  ;;   (if (= (point) (point-at-bol))
-  ;;       (insert "\n")
-  ;;     (newline)
-  ;;     (indent-for-tab-command)))
+  (defun python-return()
+    (interactive)
+    (if (= (point) (point-at-bol))
+        (insert "\n")
+      (newline)
+      (indent-for-tab-command)))
 
-  ;; (defun vmacs-python-mode-hook ()
-  ;;   ;; (when (fboundp 'jedi:setup) (jedi:setup))
-  ;;   (define-key python-mode-map  (kbd "RET") 'python-return))
+  (defun vmacs-python-mode-hook ()
+    ;; (when (fboundp 'jedi:setup) (jedi:setup))
+    (define-key python-mode-map  (kbd "RET") 'python-return))
 
-  ;; (add-hook 'python-mode-hook 'vmacs-python-mode-hook)
+  (add-hook 'python-mode-hook 'vmacs-python-mode-hook)
 #+END_SRC
 
 * Git integration
