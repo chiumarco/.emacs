@@ -4,9 +4,9 @@
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
  (filename . "c:/Users/Marco.Chiu/Dropbox/Emacs/Org/work.org")
- (front-context-string . "** TODO Compare ")
+ (front-context-string . "** TODO Contacto")
  (rear-context-string . "eral connection\n")
- (position . 548))
+ (position . 420))
 ("Mac-OrgMode"
  (filename . "~/Documents/OneDrive/Documents/OrgMode/")
  (front-context-string . ".DS_Store\n  -rw-")
