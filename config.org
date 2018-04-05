@@ -936,6 +936,7 @@ Makes eww more pleasant to use. Run it after eww buffer is loaded."
   ;; org ellipsis options, other than the default Go to Node...
   ;; not supported in common font, but supported in Symbola (my fall-back font) ⬎, ⤷, ⤵
   (setq org-ellipsis "⤵⤵⤵");; ⤵ ≫
+  (setq org-footnote-auto-adjust t)
 #+END_SRC
 
 ** Line wrapping
