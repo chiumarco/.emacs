@@ -93,7 +93,7 @@ Make Cursor the width of the character it is nder full width of a TAB
 
 *** Show line number in left
 #+BEGIN_SRC emacs-lisp
-(add-hook 'prog-mode-hook 'linum-mode)
+;;(add-hook 'prog-mode-hook 'linum-mode)
 #+END_SRC
 
 *** Toggle line spacing command
