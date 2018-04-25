@@ -311,6 +311,8 @@ To show icon in treemacs in Windows, need install dependencies as well (=emacs-2
                     ([f9] . treemacs-projectile-toggle)))
 #+END_SRC
 
+** Dired
+
 * Moving around emacs
 
 ** Ivy
