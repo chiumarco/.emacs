@@ -3,10 +3,10 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
- (filename . "~/Dropbox/Emacs/Org/home.org")
- (front-context-string . "** TODO 洗濾水器\nSCH")
- (rear-context-string . "2018-08-28 Tue>\n")
- (position . 2297))
+ (filename . "~/Dropbox/Emacs/Org/work.org")
+ (front-context-string . "** TODO AC Panel")
+ (rear-context-string . "2018-06-01 Fri>\n")
+ (position . 959))
 ("Mac-OrgMode"
  (filename . "~/Documents/OneDrive/Documents/OrgMode/")
  (front-context-string . ".DS_Store\n  -rw-")

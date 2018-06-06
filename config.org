@@ -711,6 +711,14 @@ Improve python mode indent.
   (add-hook 'python-mode-hook 'vmacs-python-mode-hook)
 #+END_SRC
 
+** Lua
+lua-mode is a major mode for editing Lua sources in Emacs.
+#+BEGIN_SRC emacs-lisp
+(use-package lua-mode
+  :ensure t
+  :mode ("\\.lua$'" . markdown-mode))
+#+END_SRC
+
 * Git integration
 
 #+BEGIN_SRC emacs-lisp
@@ -1331,12 +1339,13 @@ SX is a full stack overflow client within Emacs.
 ** auto-package-update
 Automatically update Emacs packages.
 #+BEGIN_SRC emacs-lisp
-  (use-package auto-package-update
-    :ensure t
-    :config
-    (setq auto-package-update-delete-old-versions t
-          auto-package-update-interval 30)
-    (auto-package-update-maybe))
+    (use-package auto-package-update
+      :ensure t
+      :config
+      (setq auto-package-update-delete-old-versions t
+            auto-package-update-interval 30
+            auto-package-update-prompt-before-update t)
+      (auto-package-update-maybe))
 #+END_SRC
 ** Typit
 Typing game for Emacs similar to the tests on 10 fast fingers.

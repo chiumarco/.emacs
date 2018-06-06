@@ -1,1 +1,2 @@
-([cl-struct-treemacs-workspace "Default Workspace" nil])
+([cl-struct-treemacs-workspace "Default Workspace"
+			       ([cl-struct-treemacs-project ".emacs.d" "/Users/marco/.emacs.d"])])
