@@ -148,6 +148,17 @@ I don't use either, you might want to turn those from =nil= to =t= if you do.
   (global-set-key (kbd "C-c e") 'find-config)
 #+END_SRC
 
+** Keybinding for open Hammerspoon config.lua
+#+BEGIN_SRC emacs-lisp
+  (defun find-hammerspoon-config ()
+    "Edit hammerspoon config.lua"
+    (interactive)
+    (find-file "~/.hammerspoon/init.lua"))
+
+  (global-set-key (kbd "C-c h") 'find-hammerspoon-config)
+
+#+END_SRC
+
 * Themes
 
 ** Leuven
