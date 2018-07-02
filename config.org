@@ -94,6 +94,7 @@ Make Cursor the width of the character it is nder full width of a TAB
 *** Show line number in left
 #+BEGIN_SRC emacs-lisp
 ;;(add-hook 'prog-mode-hook 'linum-mode)
+;;(add-hook 'prog-mode-hook 'display-line-number-mode)
 #+END_SRC
 
 *** Toggle line spacing command
@@ -324,6 +325,14 @@ To show icon in treemacs in Windows, need install dependencies as well (=emacs-2
 
 ** Dired
 
+** Sunrise Commander
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/packages/sunrise-commander")
+  (require 'sunrise-commander)
+  (require 'sunrise-x-buttons)
+  (require 'sunrise-x-modeline)
+  (add-to-list 'auto-mode-alist '("\\.srvm\\'" . sr-virtual-mode))
+#+END_SRC
 * Moving around emacs
 
 ** Ivy
@@ -1038,8 +1047,8 @@ Makes it all look a bit nicer, I hate looking at asterisks.
     :ensure t
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode)))
-    (when *is-a-mac*
-      (setq org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥")))
+    ;; (when *is-a-mac*
+    ;;   (setq org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥")))
     )
 #+END_SRC
 
