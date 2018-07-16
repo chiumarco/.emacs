@@ -1,14 +1,14 @@
-;;;; Emacs Bookmark Format Version 1 ;;;;
+;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*- 
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
- (filename . "~/Dropbox/Emacs/Org/work.org")
- (front-context-string . "** TODO AC Panel")
- (rear-context-string . "2018-06-01 Fri>\n")
- (position . 959))
+ (filename . "~/Dropbox/Emacs/Org/home.org")
+ (front-context-string . "The trick here i")
+ (rear-context-string . "8:54]\n   :END:\n\n")
+ (position . 1062))
 ("Mac-OrgMode"
- (filename . "~/Documents/OneDrive/Documents/OrgMode/")
+ (filename . "~/OneDrive/Documents/OrgMode/")
  (front-context-string . ".DS_Store\n  -rw-")
  (rear-context-string . "48 Mar 17 15:39 ")
  (position . 263))
