@@ -1,0 +1,2 @@
+;;; -*- no-byte-compile: t -*-
+(define-package "ace-popup-menu" "20180101.615" "Replace GUI popup menu with something more efficient" '((emacs "24.3") (avy-menu "0.1")) :commit "7b436a0d9e896463d00afbeb7e49a59cc6670e9c" :keywords '("convenience" "popup" "menu") :authors '(("Mark Karpov" . "markkarpov92@gmail.com")) :maintainer '("Mark Karpov" . "markkarpov92@gmail.com") :url "https://github.com/mrkkrp/ace-popup-menu")

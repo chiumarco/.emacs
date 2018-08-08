@@ -1,1 +1,1 @@
-("~/.emacs.d/" "/Volumes/Web/tt-rss/" "~/Downloads/.emacs.d/")
+("~/.emacs.d/" "/Volumes/Web/tt-rss/")
