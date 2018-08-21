@@ -1304,6 +1304,24 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
   %s
      ,#+END_%s" initial-txt type headers code-snippet type)))
 #+END_SRC
+*** Embedding files in Org-mode
+#+BEGIN_SRC emacs-lisp
+  (defun org-insert-file (filename)
+    "Insert Elisp code block recreating FILE in the current
+  directory."
+    (interactive "f")
+    (let ((basename (file-name-nondirectory filename))
+          (base64-string
+           (with-temp-buffer
+             (insert-file-contents-literally filename)
+             (base64-encode-region (point-min) (point-max))
+             (buffer-string))))
+      (save-excursion
+        (insert (format "[[./%s]]\n#+BEGIN_SRC emacs-lisp :results output silent\n  (with-temp-file %S\n    (insert (base64-decode-string\n      %S)))\n#+END_SRC" basename basename base64-string)))
+      (forward-line)
+      (copy-file filename basename 1)
+      (org-display-inline-images)))
+#+END_SRC
 * Useful tools
 ** ispell
 
