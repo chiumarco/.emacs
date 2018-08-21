@@ -339,8 +339,17 @@ To show icon in treemacs in Windows, need install dependencies as well (=emacs-2
 Ivy, a generic completion mechanism for Emacs.
 
 #+BEGIN_SRC emacs-lisp
+  ;; (use-package ivy
+  ;;   :ensure t)
   (use-package ivy
-    :ensure t)
+    :defer 0.1
+    :diminish
+    :bind (("C-c C-r" . ivy-resume)
+           ("C-x B" . ivy-switch-buffer-other-window))
+    :custom
+    (ivy-count-format "(%d/%d) ")
+    (ivy-use-virtual-buffers t)
+    :config (ivy-mode))
 #+END_SRC
 
 ** Counsel
@@ -354,7 +363,28 @@ Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
     (("M-y" . counsel-yank-pop)
      :map ivy-minibuffer-map
      ("M-y" . ivy-next-line))
-  )
+    )
+#+END_SRC
+
+** all-the-icons-ivy
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons-ivy
+    :ensure t
+    :config
+    (all-the-icons-ivy-setup))
+#+END_SRC
+** Ivy-rich
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy-rich
+    :after ivy
+    :ensure t
+    :custom
+    (ivy-virtual-abbreviate 'full
+                            ivy-rich-switch-buffer-align-virtual-buffer t
+                            ivy-rich-path-style 'abbrev)
+    :config
+    (ivy-set-display-transformer 'ivy-switch-buffer
+                                 'ivy-rich-switch-buffer-transformer))
 #+END_SRC
 
 ** Swiper
@@ -384,6 +414,7 @@ Swiper, an Ivy-enhanced alternative to isearch.
     (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
     (define-key read-expression-map (kbd "C-r") 'counsel-expression-history))
 #+END_SRC
+
 
 ** scrolling and why does the screen move
 I don't know to be honest, but this little bit of code makes scrolling with emacs a lot nicer.
@@ -1242,6 +1273,9 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
     (org-display-inline-images)
     )
 #+END_SRC
+
+#+RESULTS:
+: my-org-screenshot
 
 *** Drag file to org mode
 #+BEGIN_SRC emacs-lisp

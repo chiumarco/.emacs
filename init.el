@@ -62,9 +62,12 @@
  '(ediff-split-window-function (quote split-window-horizontally))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(epg-gpg-program "/usr/local/bin/gpg")
+ '(ivy-count-format "(%d/%d) ")
+ '(ivy-use-virtual-buffers t)
+ '(ivy-virtual-abbreviate (quote full))
  '(package-selected-packages
    (quote
-    (typit auto-package-update aggressive-indent tangotango-theme monokai-theme monokai sx google-this org-plus-contrib atomic-chrome flyspell-correct-ivy dracula-theme yasnippet-snippets yasnippet mu4e-alert pangu-spacing dashboard projectile spaceline markdown-mode pandoc-mode magit moe-theme company company-mode compnay-mode leuven-theme color-theme-sanityinc-tomorrow ibuffer-vc)))
+    (all-the-icons-ivy ivy-rich typit auto-package-update aggressive-indent tangotango-theme monokai-theme monokai sx google-this org-plus-contrib atomic-chrome flyspell-correct-ivy dracula-theme yasnippet-snippets yasnippet mu4e-alert pangu-spacing dashboard projectile spaceline markdown-mode pandoc-mode magit moe-theme company company-mode compnay-mode leuven-theme color-theme-sanityinc-tomorrow ibuffer-vc)))
  '(pdf-tools-handle-upgrades nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
