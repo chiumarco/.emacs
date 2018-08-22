@@ -16,7 +16,8 @@ We use an actual replacement for it, keep reading or head directly to =dashboard
 
 *** Empty scratch buffer
 #+BEGIN_SRC emacs-lisp
-(setq initial-scratch-message "")
+  (setq initial-scratch-message "")
+  (setq initial-major-mode 'org-mode)
 #+END_SRC
 
 *** Disable menus and scrollbars
