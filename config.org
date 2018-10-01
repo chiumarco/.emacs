@@ -162,39 +162,58 @@ I don't use either, you might want to turn those from =nil= to =t= if you do.
 #+END_SRC
 
 * Themes
-
 ** Leuven
 Default theme.
 #+BEGIN_SRC emacs-lisp
-(load-theme 'leuven t)
+  ;; (load-theme 'leuven t)
 #+END_SRC
-
+** Doom-themes
+#+BEGIN_SRC emacs-lisp
+  (use-package doom-themes
+    :ensure t
+    :config
+    ;; Global settings (defaults)
+    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+          doom-themes-enable-italic t) ; if nil, italics is universally disabled
+    ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
+    ;; may have their own settings.
+    (load-theme 'doom-one t)
+    ;; Enable flashing mode-line on errors
+    (doom-themes-visual-bell-config)
+    ;; Enable custom neotree theme (all-the-icons must be installed!)
+    (doom-themes-neotree-config)
+    ;; or for treemacs users
+    (doom-themes-treemacs-config)
+    ;; Corrects (and improves) org-mode's native fontification.
+    (doom-themes-org-config))
+#+END_SRC
 ** Function to toggle between light and dark
 
 #+BEGIN_SRC emacs-lisp
-    ;; Ensure that themes will be applied even if they have not been customized
-    (defun reapply-themes ()
-      "Forcibly load the themes listed in `custom-enabled-themes'."
-      (dolist (theme custom-enabled-themes)
-        (unless (custom-theme-p theme)
-          (load-theme theme)))
-      (custom-set-variables `(custom-enabled-themes (quote ,custom-enabled-themes))))
+  ;; Ensure that themes will be applied even if they have not been customized
+  (defun reapply-themes ()
+    "Forcibly load the themes listed in `custom-enabled-themes'."
+    (dolist (theme custom-enabled-themes)
+      (unless (custom-theme-p theme)
+        (load-theme theme)))
+    (custom-set-variables `(custom-enabled-themes (quote ,custom-enabled-themes))))
 
-    (add-hook 'after-init-hook 'reapply-themes)
+  (add-hook 'after-init-hook 'reapply-themes)
 
-    (defun light ()
-      "Activate a light color theme."
-      (interactive)
-      (load-theme 'leuven t)
-      (reapply-themes)
-      )
+  (defun light ()
+    "Activate a light color theme."
+    (interactive)
+    (load-theme 'leuven t)
+    (reapply-themes)
+    )
 
-    (defun dark ()
-      "Activate a dark color theme."
-      (interactive)
-      (load-theme 'leuven-dark t)
-      (reapply-themes)
-      )
+  (defun dark ()
+    "Activate a dark color theme."
+    (interactive)
+    ;; (load-theme 'leuven-dark t)
+    (load-theme 'doom-one t)
+    (reapply-themes)
+    )
 #+END_SRC
 
 * Modeline
@@ -239,12 +258,12 @@ The package =diminish= disables modes on the mode line but keeps
 them running, it just prevents them from showing up and taking up space.
 
 #+BEGIN_SRC emacs-lisp
-    (use-package diminish
-      :ensure t
-      :init
-      (diminish 'which-key-mode)
-      ;(diminish 'linum-relative-mode)
-      )
+  (use-package diminish
+    :ensure t
+    :init
+    (diminish 'which-key-mode)
+    ;; (diminish 'linum-relative-mode)
+    )
 #+END_SRC
 
 * Projectile
@@ -598,7 +617,8 @@ buffers, the current position of your cursor will be briefly highlighted now.
   (use-package beacon
     :ensure t
     :config
-      (beacon-mode 1))
+    (beacon-mode 1)
+    :diminish beacon-mode)
 #+END_SRC
 
 ** Rainbow delimiters
@@ -1603,7 +1623,8 @@ Search selected region in google.
   (use-package google-this
     :ensure t
     :config
-    (google-this-mode 1))
+    (google-this-mode 1)
+    :diminish google-this-mode)
 #+END_SRC
 ** Stack Overflow
 SX is a full stack overflow client within Emacs.

@@ -4,9 +4,9 @@
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
  (filename . "~/Dropbox/Emacs/Org/home.org")
- (front-context-string . "** TODO 6月份estat")
- (rear-context-string . "2018-09-03 Mon>\n")
- (position . 4198))
+ (front-context-string . "** TODO 更換景湖濾水器濾")
+ (rear-context-string . "2018-10-02 Tue>\n")
+ (position . 5299))
 ("Mac-OrgMode"
  (filename . "~/OneDrive/Documents/OrgMode/")
  (front-context-string . ".DS_Store\n  -rw-")
