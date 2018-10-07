@@ -13,6 +13,8 @@
 ;; each 100MB of allocated data (the default is on every 0.76MB)
 (setq gc-cons-threshold (* 100 1024 1024))
 
+
+;; Initialize package and add Melpa source
 (require 'package)
 (setq package-enable-at-startup nil)
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
@@ -25,23 +27,14 @@
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (package-initialize)
 
-;; Bootstrap `use-package'
+
+;; Install use-package
 (unless (package-installed-p 'use-package)
-	(package-refresh-contents)
-	(package-install 'use-package))
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-;; ;; Make sure Org is installed
-;; (unless (package-installed-p 'org)
-;;   (package-refresh-contents)
-;;   (package-install 'org))
+(eval-when-compile (require 'use-package))
 
-;; (use-package org
-;;   :ensure t
-;;   :init
-;;   ;; stuff you want done before org loaded
-;;   :config
-;;   ;; stuff  you want doen after org loaded
-;;   )
 
 (use-package org
   :ensure org-plus-contrib
@@ -79,7 +72,7 @@
  '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
  '(package-selected-packages
    (quote
-    (doom-themes all-the-icons-ivy ivy-rich typit auto-package-update aggressive-indent tangotango-theme monokai-theme monokai sx google-this org-plus-contrib atomic-chrome flyspell-correct-ivy dracula-theme yasnippet-snippets yasnippet mu4e-alert pangu-spacing dashboard projectile spaceline markdown-mode pandoc-mode magit moe-theme company company-mode compnay-mode leuven-theme color-theme-sanityinc-tomorrow ibuffer-vc)))
+    (exec-path-from-shell helpful deft org-mime org-mine doom-themes all-the-icons-ivy ivy-rich typit auto-package-update aggressive-indent tangotango-theme monokai-theme monokai sx google-this org-plus-contrib atomic-chrome flyspell-correct-ivy dracula-theme yasnippet-snippets yasnippet mu4e-alert pangu-spacing dashboard projectile spaceline markdown-mode pandoc-mode magit moe-theme company company-mode compnay-mode leuven-theme color-theme-sanityinc-tomorrow ibuffer-vc)))
  '(pdf-tools-handle-upgrades nil)
  '(vc-annotate-background "#282c34")
  '(vc-annotate-color-map

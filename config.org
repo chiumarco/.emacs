@@ -1,27 +1,26 @@
 * Basic Interface Settings
 These are setting that do not depend on packages and are built-in enhancements to the UI.
 
-** Check Mac or Windows
+** Detect operating system
 #+BEGIN_SRC emacs-lisp
-(defconst *is-a-mac* (eq system-type 'darwin))
-(defconst *is-a-win* (eq system-type 'windows-nt))
+  (defconst *is-a-mac* (eq system-type 'darwin))
+  (defconst *is-a-linux* (eq system-type 'gnu/linux))
+  (defconst *is-a-win* (memq system-type '(cygwin windows-nt ms-dos)))
 #+END_SRC
 
 ** Looks
-*** Remove lame startup screen
-We use an actual replacement for it, keep reading or head directly to =dashboard=.
+*** Remove default startup screen
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-message t)
 #+END_SRC
 
-*** Empty scratch buffer
+*** Empty scratch buffer and set major mode of the buffer
 #+BEGIN_SRC emacs-lisp
   (setq initial-scratch-message "")
   (setq initial-major-mode 'org-mode)
 #+END_SRC
 
-*** Disable menus and scrollbars
-If you like using any of those, change =-1= to =1=.
+*** Disable toolbar, menus and scrollbars
 #+BEGIN_SRC emacs-lisp
 (tool-bar-mode -1)
 (menu-bar-mode 1)
@@ -66,7 +65,6 @@ Changes =lambda= to an actual symbol and a few others as well, only in the GUI v
 #+END_SRC
 
 *** Front Size
-
 #+BEGIN_SRC emacs-lisp
 ;; Set front size, the value is in 1/10pt, so 160=16pt
 (when *is-a-mac*
@@ -110,16 +108,19 @@ Make Cursor the width of the character it is nder full width of a TAB
 
   (defun default-org-line-spacing ()
     "set default org mode line spacing"
-;;    (interactive)
     (setq line-spacing 0.5)
     )
 
   (add-hook 'org-mode-hook 'default-org-line-spacing)
 #+END_SRC
 
+*** Wrap lines
+#+BEGIN_SRC emacs-lisp
+;; (global-visual-line-mode 1)
+#+END_SRC
+
 ** Functionality
 *** Disable backups and auto-saves
-I don't use either, you might want to turn those from =nil= to =t= if you do.
 #+BEGIN_SRC emacs-lisp
 (setq make-backup-files nil)
 (setq auto-save-default nil)
@@ -129,10 +130,17 @@ I don't use either, you might want to turn those from =nil= to =t= if you do.
 #+BEGIN_SRC emacs-lisp
 (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
+
+*** Delete text when typing over selection
+#+BEGIN_SRC emacs-lisp
+(delete-selection-mode 1)
+#+END_SRC
+
 *** Emacs Server
 #+BEGIN_SRC emacs-lisp
 (server-start)
 #+END_SRC
+
 ** User Info
 
 #+BEGIN_SRC emacs-lisp
@@ -225,7 +233,7 @@ Powerline theme from Spacemacs
     :config
     (require 'spaceline-config)
       (setq spaceline-buffer-encoding-abbrev-p nil)
-      (setq spaceline-line-column-p nil)
+      (setq spaceline-line-column-p t)
       (setq spaceline-line-p nil)
       (setq powerline-default-separator (quote arrow))
       (spaceline-spacemacs-theme))
@@ -408,7 +416,6 @@ To show icon in treemacs in Windows, need install dependencies as well (=emacs-2
   (add-to-list 'auto-mode-alist '("\\.srvm\\'" . sr-virtual-mode))
 #+END_SRC
 * Moving around emacs
-
 ** Ivy
 Ivy, a generic completion mechanism for Emacs.
 
@@ -489,13 +496,17 @@ Swiper, an Ivy-enhanced alternative to isearch.
     (define-key read-expression-map (kbd "C-r") 'counsel-expression-history))
 #+END_SRC
 
-
-** scrolling and why does the screen move
-I don't know to be honest, but this little bit of code makes scrolling with emacs a lot nicer.
+** Scrolling behavior
+Better scrolling behavior.
 #+BEGIN_SRC emacs-lisp
-  (setq scroll-conservatively 100)
-#+END_SRC
+  (setq scroll-margin 1
+     scroll-step 1
+     scroll-conservatively 10000
+     scroll-preserve-screen-position 1)
 
+  ;; (setq mouse-wheel-follow-mouse 't)
+  ;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+#+END_SRC
 ** which-key
 Emacs package that displays available keybindings in popup.
 
@@ -654,6 +665,14 @@ Instead of GUI x-popup-menu, I prefer a small minibuffer, it's easier to select 
     :commands (goto-address-prog-mode
                goto-address-mode))
 #+END_SRC
+** Pass Mac system shell environment to Emacs
+#+BEGIN_SRC emacs-lisp
+(use-package exec-path-from-shell
+  :ensure t)
+
+(when *is-a-mac*
+  (exec-path-from-shell-initialize))
+#+END_SRC
 * Kill ring
 
 ** popup-kill-ring
@@ -732,7 +751,7 @@ YASnippet is a template system for Emacs. It allows you to type an abbreviation 
     :ensure t)
 #+END_SRC
 
-* Programmin
+* Programming
 ** Useful function
 *** Comment Block
 #+BEGIN_SRC emacs-lisp
@@ -868,7 +887,7 @@ lua-mode is a major mode for editing Lua sources in Emacs.
 #+END_SRC
 
 * Mu4e
-
+** Mu4e
 #+BEGIN_SRC emacs-lisp
   (when *is-a-mac*
     (require 'epa-file)
@@ -882,6 +901,7 @@ lua-mode is a major mode for editing Lua sources in Emacs.
         (when hostentry (netrc-get hostentry "password"))))
 
     (require 'mu4e)                      ; load mu4e
+    (require 'org-mu4e)
     ;; Use mu4e as default mail agent
     (setq mail-user-agent 'mu4e-user-agent)
     ;; Mail folder set to ~/Maildir
@@ -1053,7 +1073,81 @@ This extension adds a maildir summary in =mu4e-main-view=.
       :after mu4e
       :init (mu4e-maildirs-extension)))
 #+END_SRC
-** Signature
+
+** Use Org-mode to compose email in mu4e
+[[http://kitchingroup.cheme.cmu.edu/blog/2016/10/29/Sending-html-emails-from-org-mode-with-org-mime/#orgheadline1][Sending html emails from org-mode with org-mime]]
+#+BEGIN_SRC emacs-lisp
+  (when *is-a-mac*
+    (use-package org-mime
+      :ensure t)
+
+    (require 'org-mime)
+    (defun mu4e-compose-org-mail ()
+      (interactive)
+      (mu4e-compose-new)
+      (org-mu4e-compose-org-mode))
+
+    (defun htmlize-and-send ()
+      "When in an org-mu4e-compose-org-mode message, htmlize and send it."
+      (interactive)
+      (when (member 'org~mu4e-mime-switch-headers-or-body post-command-hook)
+        (org-mime-htmlize)
+        (org-mu4e-compose-org-mode)
+        (message-send-and-exit)))
+
+    (add-hook 'org-ctrl-c-ctrl-c-hook 'htmlize-and-send t)
+
+    (defun org-mime-compose (body fmt file &optional to subject headers)
+      (require 'message)
+      (let ((bhook
+             (lambda (body fmt)
+               (let ((hook (intern (concat "org-mime-pre-"
+                                           (symbol-name fmt)
+                                           "-hook"))))
+                 (if (> (eval `(length ,hook)) 0)
+                     (with-temp-buffer
+                       (insert body)
+                       (goto-char (point-min))
+                       (eval `(run-hooks ',hook))
+                       (buffer-string))
+                   body))))
+            (fmt (if (symbolp fmt) fmt (intern fmt)))
+            (files (org-element-map (org-element-parse-buffer) 'link
+                     (lambda (link)
+                       (when (string= (org-element-property :type link) "file")
+                         (file-truename (org-element-property :path link)))))))
+        (compose-mail to subject headers nil)
+        (message-goto-body)
+        (cond
+         ((eq fmt 'org)
+          (require 'ox-org)
+          (insert (org-export-string-as
+                   (org-babel-trim (funcall bhook body 'org)) 'org t)))
+         ((eq fmt 'ascii)
+          (require 'ox-ascii)
+          (insert (org-export-string-as
+                   (concat "#+Title:\n" (funcall bhook body 'ascii)) 'ascii t)))
+         ((or (eq fmt 'html) (eq fmt 'html-ascii))
+          (require 'ox-ascii)
+          (require 'ox-org)
+          (let* ((org-link-file-path-type 'absolute)
+                 ;; we probably don't want to export a huge style file
+                 (org-export-htmlize-output-type 'inline-css)
+                 (org-html-with-latex 'dvipng)
+                 (html-and-images
+                  (org-mime-replace-images
+                   (org-export-string-as (funcall bhook body 'html) 'html t)))
+                 (images (cdr html-and-images))
+                 (html (org-mime-apply-html-hook (car html-and-images))))
+            (insert (org-mime-multipart
+                     (org-export-string-as
+                      (org-babel-trim
+                       (funcall bhook body (if (eq fmt 'html) 'org 'ascii)))
+                      (if (eq fmt 'html) 'org 'ascii) t)
+                     html)
+                    (mapconcat 'identity images "\n")))))
+        (mapc #'mml-attach-file files))))
+#+END_SRC
 * Web
 ** EWW
 
@@ -1533,6 +1627,29 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
               (beginning-of-line (if at-bol -1 0)))))
       (message "Point is not in an Org block")))
 #+END_SRC
+** Deft
+#+BEGIN_SRC emacs-lisp
+  (use-package deft
+    :ensure t
+    ;; :bind ("<f5>" . deft)
+    :commands (deft)
+    :config
+    (setq deft-extensions '("org")
+          deft-default-extension "org"
+          deft-auto-save-interval 300.0
+          deft-use-filename-as-title nil
+          deft-use-filter-string-for-filename t
+          deft-recursive t)
+    (setq deft-file-naming-rules
+          '((noslash . "-")
+            (nospace . "_")
+            (case-fn . downcase)))
+    (when *is-a-mac*
+      (setq deft-directory "~/OneDrive/Documents/Org-mode"))
+    (when *is-a-win*
+      (setq deft-directory "C:/Users/Marco.Chiu/OneDrive/Documents/Org-mode")))
+#+END_SRC
+
 * Useful tools
 ** ispell
 
@@ -1659,6 +1776,24 @@ Typing game for Emacs similar to the tests on 10 fast fingers.
 #+BEGIN_SRC emacs-lisp
   (use-package typit
     :ensure t)
+#+END_SRC
+** Helpful
+Helpful is an alternative to the built-in Emacs help that provides much more contextual information.
+[[https://github.com/Wilfred/helpful][Helpful Github Link]]
+#+BEGIN_SRC emacs-lisp
+  (use-package helpful
+    :ensure t
+    :bind (("C-h f" . helpful-function)
+           ("C-h v" . helpful-variable)
+           ("C-h s" . helpful-symbol)
+           ("C-h k" . helpful-key)
+           ("<C-tab>" . backward-button)
+           :map helpful-mode-map
+           ("M-?" . helpful-at-point)
+           :map emacs-lisp-mode-map
+           ("M-?" . helpful-at-point)
+           :map lisp-interaction-mode-map  ; Scratch buffer
+           ("M-?" . helpful-at-point)))
 #+END_SRC
 * Personal Keymap
 
