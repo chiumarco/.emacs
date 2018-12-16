@@ -1,1 +1,1 @@
-("~/.emacs.d/")
+("~/.emacs.d/" "~/emacs_config/scimax/" "~/emacs_config/scimax/ob-ipython/" "~/Downloads/pycse/scimax/" "~/Downloads/pycse/pycse/")

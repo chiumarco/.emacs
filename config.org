@@ -272,6 +272,22 @@ them running, it just prevents them from showing up and taking up space.
     (diminish 'which-key-mode)
     ;; (diminish 'linum-relative-mode)
     )
+
+  ;;; From https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org
+  (defmacro diminish-minor-mode (filename mode &optional abbrev)
+    `(eval-after-load (symbol-name ,filename)
+       '(diminish ,mode ,abbrev)))
+
+  (defmacro diminish-major-mode (mode-hook abbrev)
+    `(add-hook ,mode-hook
+               (lambda () (setq mode-name ,abbrev))))
+
+  (diminish-minor-mode 'abbrev 'abbrev-mode)
+  (diminish-minor-mode 'company 'company-mode)
+  (diminish-minor-mode 'flycheck 'flycheck-mode)
+  (diminish-minor-mode 'flyspell 'flyspell-mode)
+  (diminish-minor-mode 'projectile 'projectile-mode)
+  (diminish-minor-mode 'yasnippet 'yas-minor-mode)
 #+END_SRC
 
 * Projectile
@@ -699,20 +715,20 @@ it starts doing its magic after typing in only 2 characters.
 
 I prefer =C-n= and =C-p= to move around the items, so I remap those accordingly.
 #+BEGIN_SRC emacs-lisp
-  (use-package company
-    :ensure t
-    :config
-      (setq company-dabbrev-downcase 0)
-      (setq company-idle-delay 0)
-      (setq company-minimum-prefix-length 3)
-    :init
-      (add-hook 'after-init-hook 'global-company-mode))
+  ;; (use-package company
+  ;;   :ensure t
+  ;;   :config
+  ;;     (setq company-dabbrev-downcase 0)
+  ;;     (setq company-idle-delay 0)
+  ;;     (setq company-minimum-prefix-length 3)
+  ;;   :init
+  ;;     (add-hook 'after-init-hook 'global-company-mode))
 
-  (with-eval-after-load 'company
-      (define-key company-active-map (kbd "M-n") nil)
-      (define-key company-active-map (kbd "M-p") nil)
-      (define-key company-active-map (kbd "C-n") #'company-select-next)
-      (define-key company-active-map (kbd "C-p") #'company-select-previous))
+  ;; (with-eval-after-load 'company
+  ;;     (define-key company-active-map (kbd "M-n") nil)
+  ;;     (define-key company-active-map (kbd "M-p") nil)
+  ;;     (define-key company-active-map (kbd "C-n") #'company-select-next)
+  ;;     (define-key company-active-map (kbd "C-p") #'company-select-previous))
 #+END_SRC
 
 ** electric
@@ -793,6 +809,7 @@ YASnippet is a template system for Emacs. It allows you to type an abbreviation 
 #+END_SRC
 
 ** Aggressive-indent-mode
+=ggressive-indent-mode= is a minor mode that keeps your code always indented.
 #+BEGIN_SRC emacs-lisp
   (use-package aggressive-indent
     :ensure t
@@ -826,6 +843,25 @@ npm install -g vmd
   (require 'vmd-mode)
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+  (use-package writeroom-mode
+    :ensure t)
+
+  (defun writing-mode ()
+    (interactive)
+    (setq buffer-face-mode-face '(:family "dejavu sans mono" :height 200))
+    (buffer-face-mode)
+    (linum-mode 0)
+    (writeroom-mode 1)
+    (blink-cursor-mode)
+    (visual-line-mode 1)
+    (setq truncate-lines nil)
+    (setq-default line-spacing 5)
+    (setq global-hl-line-mode nil)
+    )
+#+END_SRC
+
+
 ** Matlab
 
 #+BEGIN_SRC emacs-lisp
@@ -852,7 +888,13 @@ Function to open a MATLAB command line in a vertical split.
 #+END_SRC
 
 ** Python
-Improve python mode indent.
+*** Set python3 as default org-mode babel
+#+BEGIN_SRC emacs-lisp
+  ;; (setq org-babel-python-command "python3")
+  (setq python-shell-interpreter "ipython")
+       ;; python-shell-interpreter-args "-i --simple-prompt")
+#+END_SRC
+*** Improve python mode indent.
 #+BEGIN_SRC emacs-lisp
   (defun python-return()
     (interactive)
@@ -866,6 +908,78 @@ Improve python mode indent.
     (define-key python-mode-map  (kbd "RET") 'python-return))
 
   (add-hook 'python-mode-hook 'vmacs-python-mode-hook)
+#+END_SRC
+*** Dependencies of Scimax
+**** elpy
+Elpy, the Emacs Lisp Python Environment.
+#+BEGIN_SRC emacs-lisp
+  (use-package elpy
+    :ensure t
+    :config
+    (elpy-enable))
+#+END_SRC
+**** s
+Emacs string manipulation library.
+#+BEGIN_SRC emacs-lisp
+  (use-package s
+    :ensure t)
+#+END_SRC
+**** dash
+A modern list api for Emacs. No 'cl required.
+#+BEGIN_SRC emacs-lisp
+  (use-package dash
+    :ensure t)
+#+END_SRC
+**** avy
+avy is a GNU Emacs package for jumping to visible text using a char-based decision tree.
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :ensure t)
+#+END_SRC
+**** org-edit-latex
+#+BEGIN_SRC emacs-lisp
+  (use-package org-edit-latex
+    :ensure t)
+#+END_SRC
+*** Scimax
+#+BEGIN_SRC emacs-lisp
+  (setq scimax-dir "~/emacs_config/scimax")
+  (add-to-list 'load-path "~/emacs_config/scimax")
+  (require 'scimax-ob)
+
+  (if (executable-find "jupyter")
+      (use-package ob-ipython
+        :ensure nil
+        :load-path (lambda () (expand-file-name "ob-ipython-upstream" scimax-dir))
+        :init (add-to-list 'load-path (expand-file-name "ob-ipython-upstream" scimax-dir))
+        (require 'ob-ipython))
+    (message "jupyter was not found on your path. ob-ipython was not loaded."))
+
+  (require 'scimax-org-babel-ipython-upstream)
+
+
+  (use-package org-ref
+    :ensure nil
+    :load-path (lambda () (expand-file-name "org-ref" scimax-dir))
+    :init
+    (add-to-list 'load-path 
+                 (expand-file-name "org-ref" scimax-dir))
+    (setq bibtex-autokey-year-length 4
+          bibtex-autokey-name-year-separator "-"
+          bibtex-autokey-year-title-separator "-"
+          bibtex-autokey-titleword-separator "-"
+          bibtex-autokey-titlewords 2
+          bibtex-autokey-titlewords-stretch 1
+          bibtex-autokey-titleword-length 5
+          org-ref-bibtex-hydra-key-binding (kbd "H-b"))
+    )
+
+
+  ;; (add-to-list 'load-path (expand-file-name "org-ref" scimax-dir))
+  (require 'org-ref-arxiv)
+  (require 'org-ref-scopus)
+  (require 'org-ref-wos)
+
 #+END_SRC
 
 ** Lua
@@ -897,8 +1011,8 @@ lua-mode is a major mode for editing Lua sources in Emacs.
     (defun offlineimap-get-password (host port)
       (require 'netrc)
       (let* ((netrc (netrc-parse (expand-file-name "~/.authinfo.gpg")))
-             (hostentry (netrc-machine netrc host port port)))
-        (when hostentry (netrc-get hostentry "password"))))
+	     (hostentry (netrc-machine netrc host port port)))
+	(when hostentry (netrc-get hostentry "password"))))
 
     (require 'mu4e)                      ; load mu4e
     (require 'org-mu4e)
@@ -914,40 +1028,40 @@ lua-mode is a major mode for editing Lua sources in Emacs.
     ;; (setq mu4e-hide-index-messages t)
 
     (setq mu4e-contexts
-          `( ,(make-mu4e-context
-               :name "Gmail"
-               :match-func (lambda (msg) (when msg
-                                           (string-prefix-p "/Gmail" (mu4e-message-field msg :maildir))))
-               :vars '(
-                       (mu4e-sent-folder . "/Gmail/[Gmail].Sent Mail")
-                       (mu4e-trash-folder . "/Gmail/[Gmail].Trash")
-                       (mu4e-drafts-folder . "/Gmail/[Gmail].Drafts")
-                       ))
-             ,(make-mu4e-context
-               :name "Hotmail"
-               :match-func (lambda (msg) (when msg
-                                           (string-prefix-p "/Hotmail" (mu4e-message-field msg :maildir))))
-               :vars '(
-                       (mu4e-sent-folder . "/Hotmail/Sent")
-                       (mu4e-trash-folder . "/Hotmail/Deleted")
-                       (mu4e-drafts-folder . "/Hotmail/Drafts")
-                       ))
-             ,(make-mu4e-context
-               :name "Yahoo"
-               :match-func (lambda (msg) (when msg
-                                           (string-prefix-p "/Yahoo" (mu4e-message-field msg :maildir))))
-               :vars '(
-                       (mu4e-sent-folder . "/Yahoo/Sent")
-                       (mu4e-trash-folder . "/Yahoo/Deleted Items")
-                       (mu4e-drafts-folder . "/Yahoo/Draft")
-                       ))
-             ))
+	  `( ,(make-mu4e-context
+	       :name "Gmail"
+	       :match-func (lambda (msg) (when msg
+					   (string-prefix-p "/Gmail" (mu4e-message-field msg :maildir))))
+	       :vars '(
+		       (mu4e-sent-folder . "/Gmail/[Gmail].Sent Mail")
+		       (mu4e-trash-folder . "/Gmail/[Gmail].Trash")
+		       (mu4e-drafts-folder . "/Gmail/[Gmail].Drafts")
+		       ))
+	     ,(make-mu4e-context
+	       :name "Hotmail"
+	       :match-func (lambda (msg) (when msg
+					   (string-prefix-p "/Hotmail" (mu4e-message-field msg :maildir))))
+	       :vars '(
+		       (mu4e-sent-folder . "/Hotmail/Sent")
+		       (mu4e-trash-folder . "/Hotmail/Deleted")
+		       (mu4e-drafts-folder . "/Hotmail/Drafts")
+		       ))
+	     ,(make-mu4e-context
+	       :name "Yahoo"
+	       :match-func (lambda (msg) (when msg
+					   (string-prefix-p "/Yahoo" (mu4e-message-field msg :maildir))))
+	       :vars '(
+		       (mu4e-sent-folder . "/Yahoo/Sent")
+		       (mu4e-trash-folder . "/Yahoo/Deleted Items")
+		       (mu4e-drafts-folder . "/Yahoo/Draft")
+		       ))
+	     ))
 
     ;; the maildirs you use frequently; access them with 'j' ('jump')
     (setq   mu4e-maildir-shortcuts
-            '(("/Gmail/INBOX"               . ?i)
-              ("/Gmail/[Gamil].Sent Mail"   . ?s)
-              ("/Gmail/[Gmail].Trash"       . ?t)))
+	    '(("/Gmail/INBOX"               . ?i)
+	      ("/Gmail/[Gamil].Sent Mail"   . ?s)
+	      ("/Gmail/[Gmail].Trash"       . ?t)))
 
     ;; give me ISO(ish) format date-time stamps in the header list
     (setq mu4e-headers-date-format "%Y-%m-%d %H:%M")
@@ -956,18 +1070,18 @@ lua-mode is a major mode for editing Lua sources in Emacs.
     ;; (better only use that for the last field.
     ;; These are the defaults:
     (setq mu4e-headers-fields
-          '( (:date          .  20)    ;; alternatively, use :human-date
-             (:flags         .   5)
-             (:from          .  25)
-             (:subject       .  nil))) ;; alternatively, use :thread-subject
+	  '( (:date          .  20)    ;; alternatively, use :human-date
+	     (:flags         .   5)
+	     (:from          .  25)
+	     (:subject       .  nil))) ;; alternatively, use :thread-subject
 
     (require 'mu4e-contrib)
     ;; (setq mu4e-html2text-command 'mu4e-shr2text)
     ;; try to emulate some of the eww key-bindings
     (add-hook 'mu4e-view-mode-hook
-              (lambda ()
-                (local-set-key (kbd "<tab>") 'shr-next-link)
-                (local-set-key (kbd "<backtab>") 'shr-previous-link)))
+	      (lambda ()
+		(local-set-key (kbd "<tab>") 'shr-next-link)
+		(local-set-key (kbd "<backtab>") 'shr-previous-link)))
 
     ;; Call EWW to display HTML messages
     (defun jcs-view-in-eww (msg)
@@ -1001,8 +1115,8 @@ lua-mode is a major mode for editing Lua sources in Emacs.
 
     ;; SMTP setup
     (setq message-send-mail-function 'smtpmail-send-it
-          smtpmail-stream-type 'starttls
-          starttls-use-gnutls t)
+	  smtpmail-stream-type 'starttls
+	  starttls-use-gnutls t)
     ;; Personal info
     (setq user-full-name "Marco Chiu")          ; FIXME: add your info here
     (setq user-mail-address "chiumarco@gmail.com"); FIXME: add your info here
@@ -1017,28 +1131,33 @@ lua-mode is a major mode for editing Lua sources in Emacs.
       "Insert one of a number of sigs"
       (interactive)
       (let ((message-signature
-             (mu4e-read-option "Signature:"
-                               '(("formal" .
-                                  (concat
-                                   "Best Regards,\n"
-                                   "Marco Chiu\n"
-                                   "+852 6013 2727 | chiumarco@gmail.com\n"))
-                                 ("informal" .
-                                  (concat
-                                   "Thanks,\n"
-                                   "Marco\n"))))))
-        (message-insert-signature)))
+	     (mu4e-read-option "Signature:"
+			       '(("formal" .
+				  (concat
+				   "Best Regards,\n"
+				   "Marco Chiu\n"
+				   "+852 6013 2727 | chiumarco@gmail.com\n"))
+				 ("informal" .
+				  (concat
+				   "Thanks,\n"
+				   "Marco\n"))))))
+	(message-insert-signature)))
 
     (add-hook 'mu4e-compose-mode-hook
-              (lambda () (local-set-key (kbd "C-c C-w") #'my-mu4e-choose-signature)))
+	      (lambda () (local-set-key (kbd "C-c C-w") #'my-mu4e-choose-signature)))
 
 
     ;; don't keep message buffers after sent message
     (setq message-kill-buffer-on-exit t)
 
-    (global-set-key (kbd "<f6>") 'mu4e)
 
-    )
+    (defun my-mu4e-key-binding ()
+      "Run mu4e and close other frame"
+      (interactive)
+      (mu4e)
+      (delete-other-windows))
+  
+    (global-set-key (kbd "<f6>") 'my-mu4e-key-binding))
 #+END_SRC
 
 ** mu4e-alert
@@ -1196,6 +1315,7 @@ Makes eww more pleasant to use. Run it after eww buffer is loaded."
   (setq org-ellipsis "⤵⤵⤵");; ⤵ ≫
   (setq org-footnote-auto-adjust t)
   (setq org-use-speed-commands t)
+  (setq org-startup-with-inline-images t)
 #+END_SRC
 
 ** Line wrapping
@@ -1390,13 +1510,14 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
 
 
 #+BEGIN_SRC emacs-lisp
+  ;;(setq python-shell-interpreter "python3")
   (org-babel-do-load-languages
    'org-babel-load-languages
    '(
      (calc . t)
      (shell . t)
      (python . t)
-     ;(R . t)
+     (ipython . t)
      ))
 #+END_SRC
 
@@ -1650,6 +1771,62 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
       (setq deft-directory "C:/Users/Marco.Chiu/OneDrive/Documents/Org-mode")))
 #+END_SRC
 
+** RSS with Elfeed
+#+BEGIN_SRC emacs-lisp
+  (use-package elfeed
+    :ensure t
+    :bind (:map elfeed-search-mode-map
+                ("A" . bjm/elfeed-show-all)
+                ("E" . bjm/elfeed-show-emacs)
+                ("q" . bjm/elfeed-save-db-and-bury)))
+
+  ;; (require 'elfeed)
+
+  (use-package elfeed-org
+    :ensure t
+    :config
+    (elfeed-org)
+    (setq rmh-elfeed-org-files (list "~/.elfeed/elfeed.org")))
+
+  ;;shortcut functions
+  (defun bjm/elfeed-show-all ()
+    (interactive)
+    (bookmark-maybe-load-default-file)
+    (bookmark-jump "elfeed-all"))
+  (defun bjm/elfeed-show-emacs ()
+    (interactive)
+    (bookmark-maybe-load-default-file)
+    (bookmark-jump "elfeed-emacs"))
+
+  ;;functions to support syncing .elfeed between machines
+  ;;makes sure elfeed reads index from disk before launching
+  (defun bjm/elfeed-load-db-and-open ()
+    "Wrapper to load the elfeed db from disk before opening"
+    (interactive)
+    (elfeed-db-load)
+    (elfeed)
+    (elfeed-search-update--force)
+    (elfeed-update))
+
+  ;;write to disk when quiting
+  (defun bjm/elfeed-save-db-and-bury ()
+    "Wrapper to save the elfeed db to disk before burying buffer"
+    (interactive)
+    (elfeed-db-save)
+    (quit-window))
+
+  (defun bjm/elfeed-updater ()
+    "Wrapper to load the elfeed db from disk before opening"
+    (interactive)
+    (elfeed-db-save)
+    (quit-window)
+    (elfeed-db-load)
+    (elfeed)
+    (elfeed-search-update--force)
+    (elfeed-update))
+
+  ;; (run-with-timer 0 (* 30 60) 'bjm/elfeed-updater)
+#+END_SRC
 * Useful tools
 ** ispell
 
@@ -1737,11 +1914,45 @@ org-link support for pdf-view-mode
 ** Google-this
 Search selected region in google.
 #+BEGIN_SRC emacs-lisp
-  (use-package google-this
+  ;; (use-package google-this
+  ;;   :ensure t
+  ;;   :config
+  ;;   (google-this-mode 1)
+  ;;   :diminish google-this-mode)
+#+END_SRC
+** engine-mode
+Engine-mode is a global minor mode for Emacs. It enables you to easily define search engines, bind them to keybindings, and query them from the comfort of your editor.
+#+BEGIN_SRC emacs-lisp
+  (use-package engine-mode
     :ensure t
     :config
-    (google-this-mode 1)
-    :diminish google-this-mode)
+    (defengine duckduckgo
+      "https://duckduckgo.com/?q=%s"
+      :keybinding "d")
+
+    (defengine github
+      "https://github.com/search?ref=simplesearch&q=%s"
+      :keybinding "h")
+
+    (defengine google
+      "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
+      :keybinding "g")
+
+    (defengine stack-overflow
+      "https://stackoverflow.com/search?q=%s"
+      :keybinding "s")
+
+    (defengine wikipedia
+      "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
+      :keybinding "w")
+
+    (defengine wiktionary
+      "https://www.wikipedia.org/search-redirect.php?family=wiktionary&language=en&go=Go&search=%s")
+
+    (defengine youtube
+      "https://www.youtube.com/results?search_query=%s"
+      :keybinding "y")
+    (engine-mode t))
 #+END_SRC
 ** Stack Overflow
 SX is a full stack overflow client within Emacs.
@@ -1794,6 +2005,12 @@ Helpful is an alternative to the built-in Emacs help that provides much more con
            ("M-?" . helpful-at-point)
            :map lisp-interaction-mode-map  ; Scratch buffer
            ("M-?" . helpful-at-point)))
+#+END_SRC
+** esup
+Benchmark Emacs Startup time without ever leaving your Emacs.
+#+BEGIN_SRC emacs-lisp
+  (use-package esup
+    :ensure t)
 #+END_SRC
 * Personal Keymap
 

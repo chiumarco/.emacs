@@ -2,16 +2,16 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("org-capture-last-stored"
+(("Mac Org-mode"
+ (filename . "~/OneDrive/Documents/Org-mode/")
+ (front-context-string . "test.org\n  -rw-r")
+ (rear-context-string . "41 Oct 13 02:06 ")
+ (position . 832))
+("org-capture-last-stored"
  (filename . "~/Dropbox/Emacs/Org/home.org")
- (front-context-string . "** TODO 攞廁所蓋\nSCH")
- (rear-context-string . "告士打道280號世貿中心十二樓\n")
- (position . 5363))
-("Mac-OrgMode"
- (filename . "~/OneDrive/Documents/OrgMode/")
- (front-context-string . ".DS_Store\n  -rw-")
- (rear-context-string . "48 Mar 17 15:39 ")
- (position . 263))
+ (front-context-string . "** TODO 冬至食飯\nSCH")
+ (rear-context-string . "道23號城景國際酒店2樓水晶殿\n")
+ (position . 8958))
 ("Org-note"
  (filename . "c:/Users/Marco.Chiu/OneDrive/Documents/OrgMode/")
  (front-context-string . "How to Change a ")

@@ -62,6 +62,12 @@
  '(ediff-diff-options "-w")
  '(ediff-split-window-function (quote split-window-horizontally))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
+ '(elfeed-feeds
+   (quote
+    (("http://feeds2.feedburner.com/unwirelife" tech)
+     ("https://sspai.com/feed" tech)
+     ("http://pragmaticemacs.com/feed/" emacs)
+     ("http://planet.emacsen.org/atom.xml" emacs))))
  '(epg-gpg-program "/usr/local/bin/gpg")
  '(fci-rule-color "#5B6268")
  '(ivy-count-format "(%d/%d) ")
@@ -72,7 +78,7 @@
  '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
  '(package-selected-packages
    (quote
-    (exec-path-from-shell helpful deft org-mime org-mine doom-themes all-the-icons-ivy ivy-rich typit auto-package-update aggressive-indent tangotango-theme monokai-theme monokai sx google-this org-plus-contrib atomic-chrome flyspell-correct-ivy dracula-theme yasnippet-snippets yasnippet mu4e-alert pangu-spacing dashboard projectile spaceline markdown-mode pandoc-mode magit moe-theme company company-mode compnay-mode leuven-theme color-theme-sanityinc-tomorrow ibuffer-vc)))
+    (writeroom-mode elfeed-org elfeed engine-mode minions elpy org-ref esup exec-path-from-shell helpful deft org-mime org-mine doom-themes all-the-icons-ivy ivy-rich typit auto-package-update aggressive-indent tangotango-theme monokai-theme monokai sx google-this org-plus-contrib atomic-chrome flyspell-correct-ivy dracula-theme yasnippet-snippets yasnippet mu4e-alert pangu-spacing dashboard projectile spaceline markdown-mode pandoc-mode magit moe-theme company company-mode compnay-mode leuven-theme color-theme-sanityinc-tomorrow ibuffer-vc)))
  '(pdf-tools-handle-upgrades nil)
  '(vc-annotate-background "#282c34")
  '(vc-annotate-color-map
