@@ -8,10 +8,10 @@
  (rear-context-string . "41 Oct 13 02:06 ")
  (position . 832))
 ("org-capture-last-stored"
- (filename . "~/Dropbox/Emacs/Org/home.org")
- (front-context-string . "** TODO 冬至食飯\nSCH")
- (rear-context-string . "道23號城景國際酒店2樓水晶殿\n")
- (position . 8958))
+ (filename . "~/Dropbox/Emacs/Org/personal.org")
+ (front-context-string . "** TODO Buy VTI ")
+ (rear-context-string . "ection 以了解領取詳情。\n")
+ (position . 7475))
 ("Org-note"
  (filename . "c:/Users/Marco.Chiu/OneDrive/Documents/OrgMode/")
  (front-context-string . "How to Change a ")
