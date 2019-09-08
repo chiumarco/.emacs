@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/emacs_config/scimax/" "~/emacs_config/scimax/ob-ipython/" "~/Downloads/pycse/scimax/" "~/Downloads/pycse/pycse/")
+("~/.emacs.d/" "~/Documents/KiCad/KiCad_Libraries/" "~/Documents/KiCad/DIY/Milliohm_Meter/" "~/emacs_config/scimax/" "~/emacs_config/scimax/ob-ipython/" "~/Downloads/pycse/scimax/" "~/Downloads/pycse/pycse/")

@@ -957,10 +957,10 @@ avy is a GNU Emacs package for jumping to visible text using a char-based decisi
 
   (if (executable-find "jupyter")
       (use-package ob-ipython
-	:ensure nil
-	:load-path (lambda () (expand-file-name "ob-ipython-upstream" scimax-dir))
-	:init (add-to-list 'load-path (expand-file-name "ob-ipython-upstream" scimax-dir))
-	(require 'ob-ipython))
+        :ensure nil
+        :load-path (lambda () (expand-file-name "ob-ipython-upstream" scimax-dir))
+        :init (add-to-list 'load-path (expand-file-name "ob-ipython-upstream" scimax-dir))
+        (require 'ob-ipython))
     (message "jupyter was not found on your path. ob-ipython was not loaded."))
 
   (require 'scimax-org-babel-ipython-upstream)
@@ -971,15 +971,15 @@ avy is a GNU Emacs package for jumping to visible text using a char-based decisi
     :load-path (lambda () (expand-file-name "org-ref" scimax-dir))
     :init
     (add-to-list 'load-path 
-		 (expand-file-name "org-ref" scimax-dir))
+                 (expand-file-name "org-ref" scimax-dir))
     (setq bibtex-autokey-year-length 4
-	  bibtex-autokey-name-year-separator "-"
-	  bibtex-autokey-year-title-separator "-"
-	  bibtex-autokey-titleword-separator "-"
-	  bibtex-autokey-titlewords 2
-	  bibtex-autokey-titlewords-stretch 1
-	  bibtex-autokey-titleword-length 5
-	  org-ref-bibtex-hydra-key-binding (kbd "H-b"))
+          bibtex-autokey-name-year-separator "-"
+          bibtex-autokey-year-title-separator "-"
+          bibtex-autokey-titleword-separator "-"
+          bibtex-autokey-titlewords 2
+          bibtex-autokey-titlewords-stretch 1
+          bibtex-autokey-titleword-length 5
+          org-ref-bibtex-hydra-key-binding (kbd "H-b"))
     )
 
 
@@ -1466,8 +1466,8 @@ Hitting tab after an "<el" in an org-mode file will create a template for elisp 
 
   (setq org-default-notes-file path_inbox)
   (setq org-mobile-inbox-for-pull path_inbox)
-  (setq org-mobile-files (list path_home path_work path_personal))
-  (setq org-agenda-files (list path_home path_work path_personal))
+  (setq org-mobile-files (list path_home path_work path_personal path_inbox))
+  (setq org-agenda-files (list path_home path_work path_personal path_inbox))
 
   (setq org-capture-templates
         '(("t" "Todo-Personal" entry (file+headline path_personal "Personal Tasks:") "* TODO %?\n")
@@ -2021,6 +2021,4 @@ Benchmark Emacs Startup time without ever leaving your Emacs.
   (use-package esup
     :ensure t)
 #+END_SR
-* Personal Keymap
-
 
